@@ -95,7 +95,7 @@ hs_err_pid*
 
 # Manual
 
-/Server
+Server/
 
 
 # End of https://www.toptal.com/developers/gitignore/api/eclipse,java
