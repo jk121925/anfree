@@ -96,6 +96,6 @@ hs_err_pid*
 # Manual
 
 Servers/
-
+Done/src/main/webapp/WEB-INF/web.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/eclipse,java
