@@ -1,0 +1,12 @@
+package listeners;
+
+import javax.servlet.annotation.WebListener;
+
+import dao.MemberDao;
+
+@WebListener
+public class ContextLoaderListener implements ServletContextListener{
+	
+	
+	
+}

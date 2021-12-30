@@ -1,0 +1,24 @@
+<%@ page import="spms.vo.Member" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<jsp:useBean id="member" scope="request" class="spms.vo.Member" type="spms.vo.Member"/>
+<title>Member ingredient</title>
+</head>
+<body>
+	<form action='update' method='post'>
+		number: <input type='text' name='no' value=<%=member.getNo() %> readonly><br>
+		name: <input type='text' name ='name' value=<%=member.getName() %>><br>
+		e-mail: <input type='text' name='email' value=<%=member.getEmail() %>><br>
+		register at <%=member.getCreatedDate() %><br>
+		<input type='submit' value='Update'>
+		<input type='reset' value='reset' onclick='location.href="list"'>
+	</form>
+</body>
+</html>
+
+
+
