@@ -1,5 +1,5 @@
 package servlets;
-import dao.MemberDao;
+import dao.MysqlMemberDao;
 import vo.Member;
 
 import java.io.IOException;
@@ -38,7 +38,7 @@ public class MemberUpdateServlet extends HttpServlet {
 //	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		Connection conn = null;
+//		Connection conn = null;
 //		Statement stmt = null;
 //		ResultSet rs = null;
 		Member member = new Member();
@@ -49,14 +49,15 @@ public class MemberUpdateServlet extends HttpServlet {
 //			stmt = conn.createStatement();
 //			MemberDao dao = new MemberDao();
 //			dao.setConnection(conn);
-			MemberDao dao = (MemberDao)sc.getAttribute("memberDao");
+			MysqlMemberDao dao = (MysqlMemberDao)sc.getAttribute("memberDao");
 			
 			member = dao.selectOne(Integer.parseInt(request.getParameter("no")));
 			
 			if(member !=null) {
 				request.setAttribute("member", member);
-				RequestDispatcher rd = request.getRequestDispatcher("/member/MemberUpdateForm.jsp");
-				rd.include(request, response);
+				request.setAttribute("viewUrl", "/member/MemberUpdateForm.jsp");
+//				RequestDispatcher rd = request.getRequestDispatcher("/member/MemberUpdateForm.jsp");
+//				rd.include(request, response);
 			}
 			
 			
@@ -99,10 +100,10 @@ public class MemberUpdateServlet extends HttpServlet {
 //			Class.forName(sc.getInitParameter("driver"));
 //			MemberDao dao = new MemberDao();
 //			dao.setConnection(conn);
-			MemberDao dao = (MemberDao)sc.getAttribute("memberDao");
+			MysqlMemberDao dao = (MysqlMemberDao)sc.getAttribute("memberDao");
 			member.setEmail(request.getParameter("email")).setName(request.getParameter("name")).setNo(Integer.parseInt(request.getParameter("no")));
 			dao.update(member);
-			
+			request.setAttribute("viewUrl", "redirect:list.do");
 			
 //			conn = DriverManager.getConnection(sc.getInitParameter("url"),sc.getInitParameter("username"),sc.getInitParameter("password"));
 //			stmt = conn.prepareStatement("UPDATE MEMBERS SET EMAIL=?,MNAME=?,MOD_DATE=now()" + " WHERE MNO=?");
@@ -110,7 +111,7 @@ public class MemberUpdateServlet extends HttpServlet {
 //			stmt.setString(2, request.getParameter("name"));
 //			stmt.setInt(3, Integer.parseInt(request.getParameter("no")));
 //			stmt.executeUpdate();
-			response.sendRedirect("list");
+//			response.sendRedirect("list");
 
 		}catch(Exception e) {
 			throw new ServletException(e);

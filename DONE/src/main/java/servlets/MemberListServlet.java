@@ -1,5 +1,5 @@
 package servlets;
-import dao.MemberDao;
+import dao.MysqlMemberDao;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -39,13 +39,15 @@ public class MemberListServlet extends HttpServlet {
 //			conn = (Connection)sc.getAttribute("conn");
 //			MemberDao memberDao = new MemberDao();
 			//using ContextLoaderListener
-			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
+			MysqlMemberDao memberDao = (MysqlMemberDao)sc.getAttribute("memberDao");
 			
 //			memberDao.setConnection(conn);
 			request.setAttribute("members", memberDao.selectList());
+			request.setAttribute("viewUrl", "/member/MemberList.jsp");
+			
 //			stmt = conn.createStatement();
 //			rs = stmt.executeQuery("select MNO,MNAME,EMAIL,CRE_DATE" + " from MEMBERS" +" order by MNO ASC");
-			response.setContentType("text/html; charset = UTF-8");
+			
 //			ArrayList<Member> members = new ArrayList<Member>();
 			
 //			while(rs.next()) {
@@ -56,19 +58,20 @@ public class MemberListServlet extends HttpServlet {
 			
 //			request.setAttribute("members", members);
 			
-			RequestDispatcher rd = request.getRequestDispatcher("/member/MemberList.jsp");
-			rd.include(request, response);
+			/* USE DISPATCHERSERVLET
+			 * response.setContentType("text/html; charset = UTF-8");
+			 * RequestDispatcher rd =
+			 * request.getRequestDispatcher("/member/MemberList.jsp"); rd.include(request,
+			 * response);
+			 */
 		
 		}catch (Exception e){
-			e.printStackTrace();
-			try {if(rs!=null) rs.close();}catch(Exception rsE) {}
-			try {if(stmt!=null) stmt.close();}catch(Exception stmtE) {}
-			try {if(conn!=null) conn.close();}catch(Exception connE) {}
+			throw new ServletException(e);
 			
-			
-			request.setAttribute("error", e);
-			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
-			rd.forward(request, response);
+			/*
+			 * e.printStackTrace(); request.setAttribute("error", e); RequestDispatcher rd =
+			 * request.getRequestDispatcher("/Error.jsp"); rd.forward(request, response);
+			 */
 		}
 		
 		

@@ -1,5 +1,5 @@
 package servlets;
-import dao.MemberDao;
+import dao.MysqlMemberDao;
 import vo.Member;
 
 import java.io.IOException;
@@ -33,14 +33,14 @@ public class MemberAddServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		try {
-			RequestDispatcher rd = request.getRequestDispatcher("/member/MemberAddForm.jsp");
-			rd.include(request, response);
-		}catch(Exception e) {
-			throw new ServletException(e);
-		}
+		request.setAttribute("viewUrl", "/member/MemberAddForm.jsp");
 		
+		/*
+		 * try { RequestDispatcher rd =
+		 * request.getRequestDispatcher("/member/MemberAddForm.jsp");
+		 * rd.include(request, response); }catch(Exception e) { throw new
+		 * ServletException(e); }
+		 */		
 		
 	}
 
@@ -60,11 +60,12 @@ public class MemberAddServlet extends HttpServlet {
 //			Class.forName(sc.getInitParameter("driver"));
 //			conn = (Connection)sc.getAttribute("conn");
 //			MemberDao dao = new MemberDao();
-			MemberDao dao =(MemberDao) sc.getAttribute("memberDao");
+			MysqlMemberDao dao =(MysqlMemberDao) sc.getAttribute("memberDao");
 			Member member = new Member().setEmail(request.getParameter("email")).setName(request.getParameter("name")).setPassword(request.getParameter("password"));
-			
-//			dao.setConnection(conn);
 			dao.insert(member);
+			request.setAttribute("viewUrl", "redirect:list.do");
+//			dao.setConnection(conn);
+			
 			
 //			stmt = conn.prepareStatement("INSERT INTO MEMBERS(EMAIL,PWD,MNAME,CRE_DATE,MOD_DATE)" + " VALUES(?,?,?,NOW(),NOW())");
 //			stmt.setString(1, request.getParameter("email"));
@@ -72,8 +73,11 @@ public class MemberAddServlet extends HttpServlet {
 //			stmt.setString(3, request.getParameter("name")); 
 //			stmt.executeUpdate();
 
-			RequestDispatcher rd = request.getRequestDispatcher("/member/MemberAddSuccess.jsp");
-			rd.forward(request, response);
+			/*
+			 * RequestDispatcher rd =
+			 * request.getRequestDispatcher("/member/MemberAddSuccess.jsp");
+			 * rd.forward(request, response);
+			 */
 			
 		}catch(Exception e) {
 			e.printStackTrace();

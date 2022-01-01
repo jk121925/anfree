@@ -1,11 +1,10 @@
 package servlets;
-import dao.MemberDao;
+import dao.MysqlMemberDao;
 import vo.Member;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dao.MemberDao;
 
 /**
  * Servlet implementation class LogInServelt
@@ -37,15 +35,16 @@ public class LogInServelt extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher("/auth/LogInForm.jsp");
-		rd.forward(request, response);
+		request.setAttribute("viewUrl", "/auth/LogInForm.jsp");
+//		RequestDispatcher rd = request.getRequestDispatcher("/auth/LogInForm.jsp");
+//		rd.forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn =null;
+//		Connection conn =null;
 //		PreparedStatement stmt =null;
 //		ResultSet rs = null;
 		
@@ -54,16 +53,18 @@ public class LogInServelt extends HttpServlet {
 //			conn = (Connection)sc.getAttribute("conn");
 //			MemberDao dao = new MemberDao();
 //			dao.setConnection(conn);
-			MemberDao dao = (MemberDao)sc.getAttribute("memberDao");
+			MysqlMemberDao dao = (MysqlMemberDao)sc.getAttribute("memberDao");
 			Member member = dao.exist(request.getParameter("email"), request.getParameter("password"));
 			
 			if(member!=null) {
 				HttpSession session = request.getSession();
 				session.setAttribute("member", member);
-				response.sendRedirect("../member/list");
+//				response.sendRedirect("../member/list");
+				request.setAttribute("viewUrl", "redirect:../member/list.do");
 			}else {
-				RequestDispatcher rd = request.getRequestDispatcher("/auth/LogInFail.jsp");
-				rd.forward(request, response);
+				request.setAttribute("viewUrl", "/auth/LogInFail.jsp");
+//				RequestDispatcher rd = request.getRequestDispatcher("/auth/LogInFail.jsp");
+//				rd.forward(request, response);
 			}
 			
 			

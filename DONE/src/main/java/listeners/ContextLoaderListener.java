@@ -14,8 +14,13 @@ import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
 
-
-import dao.MemberDao;
+import controller.AuthLogOutController;
+import controller.AuthLoginController;
+import controller.MemberAddController;
+import controller.MemberDeleteController;
+import controller.MemberListController;
+import controller.MemberUpdateController;
+import dao.MysqlMemberDao;
 import util.DBConnectionPool;
 
 @WebListener
@@ -51,15 +56,23 @@ public class ContextLoaderListener implements ServletContextListener{
 			 * ds.setUsername(sc.getInitParameter("username"));
 			 * ds.setPassword(sc.getInitParameter("password"));
 			 */
-			MemberDao memberDao = new MemberDao();
+			MysqlMemberDao memberDao = new MysqlMemberDao();
 			memberDao.setDataSource(ds);
 			
 			/* use connection 
 			memberDao.setConnection(conn);
 			*/
 			
-			sc.setAttribute("memberDao", memberDao);
+			/* USE INDEPENDENT INJECTION, ERASE IT
+			 * sc.setAttribute("memberDao", memberDao);
+			 */			
 			
+			sc.setAttribute("/auth/login.do", new AuthLoginController().setMemberDao(memberDao) );
+			sc.setAttribute("/auth/logout.do", new AuthLogOutController());
+			sc.setAttribute("/member/list.do", new MemberListController().setMemberDao(memberDao));
+			sc.setAttribute("/member/add.do", new MemberAddController().setMemberDao(memberDao));
+			sc.setAttribute("/member/delete.do", new MemberDeleteController().setMemberDao(memberDao));
+			sc.setAttribute("/member/update.do", new MemberUpdateController().setMemberDao(memberDao));
 		}catch(Throwable e) {
 			e.printStackTrace();
 		}

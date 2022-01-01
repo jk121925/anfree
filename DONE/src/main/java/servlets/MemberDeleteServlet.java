@@ -1,5 +1,5 @@
 package servlets;
-import dao.MemberDao;
+import dao.MysqlMemberDao;
 import java.io.IOException;
 import java.sql.Connection;
 
@@ -38,15 +38,16 @@ public class MemberDeleteServlet extends HttpServlet {
 //			conn = (Connection)sc.getAttribute("conn");
 //			MemberDao dao = new MemberDao();
 //			dao.setConnection(conn);
-			MemberDao dao = (MemberDao) sc.getAttribute("memberDao");
+			MysqlMemberDao dao = (MysqlMemberDao) sc.getAttribute("memberDao");
 			
 			dao.delete(Integer.parseInt(request.getParameter("no")));
+			request.setAttribute("viewUrl", "redirect:list.do");
 			
 //			stmt = conn.prepareStatement("DELETE FROM members WHERE MNO=?");
 //			stmt.setInt(1, Integer.parseInt(request.getParameter("no")) );
 //			stmt.executeUpdate();
 			
-			response.sendRedirect("list");
+//			response.sendRedirect("list");
 			
 //			RequestDispatcher rd = request.getRequestDispatcher("list");
 //			rd.forward(request, response);

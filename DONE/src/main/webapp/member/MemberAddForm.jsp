@@ -8,7 +8,7 @@
 </head>
 <body>
 	<h1>Registration Member</h1>
-	<form action='add' method='post'>
+	<form action='add.do' method='post'>
 		name : <input type='text' name='name'><br>
 		E-mail : <input type='text' name='email'><br>
 		password : <input type='password' name='password'><br>

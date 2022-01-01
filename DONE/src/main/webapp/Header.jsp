@@ -9,7 +9,7 @@
 	<span style="float:right;">
 		<%=member.getName() %>
 		<a style = "color:white;"
-			href="<%=request.getContextPath() %>/auth/logout">logout</a>
+			href="<%=request.getContextPath() %>/auth/logout.do">logout</a>
 	</span>
 	<%}  %>
 </div>

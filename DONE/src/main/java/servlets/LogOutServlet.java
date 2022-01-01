@@ -30,7 +30,7 @@ public class LogOutServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.invalidate();
 		
-		response.sendRedirect("login");
+		response.sendRedirect("login.do");
 	}
 
 	/**
