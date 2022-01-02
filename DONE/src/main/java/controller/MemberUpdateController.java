@@ -4,8 +4,8 @@ import java.util.Map;
 
 import dao.MysqlMemberDao;
 import vo.Member;
-
-public class MemberUpdateController implements Controller {
+import bind.DataBinding;
+public class MemberUpdateController implements Controller, DataBinding {
 	MysqlMemberDao memberDao;
 	
 	public MemberUpdateController setMemberDao(MysqlMemberDao memberDao) {
@@ -13,16 +13,20 @@ public class MemberUpdateController implements Controller {
 		return this;
 	}
 	
+	public Object[] getDataBinders() {
+		return new Object[] {"no", Integer.class,"member",vo.Member.class};
+	}
+	
 	
 	@Override
 	public String execute(Map<String, Object> model) throws Exception {
 //		MysqlMemberDao memberdao = (MysqlMemberDao) model.get("memberDao");
-		if(model.get("no") != null) {
-			Member member = memberDao.selectOne((Integer)model.get("no"));
+		Member member = (Member) model.get("member");
+		if(member.getEmail()==null) {
+			member = memberDao.selectOne((Integer)model.get("no"));
 			model.put("member", member);
 			return "/member/MemberUpdateForm.jsp";
-		}else {
-			Member member = (Member) model.get("member");
+		}else{
 			memberDao.update(member);
 			return "redirect:list.do";
 		}

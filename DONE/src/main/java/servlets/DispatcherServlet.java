@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import bind.DataBinding;
+import bind.ServletRequestDataBinder;
 import controller.AuthLogOutController;
 import controller.AuthLoginController;
 import controller.Controller;
@@ -40,38 +42,45 @@ public class DispatcherServlet extends HttpServlet {
 			String pageControllerPath=null;
 			Controller pageController= (Controller) sc.getAttribute(servletPath);
 			
-			if("/member/list.do".equals(servletPath)) {
-//				pageController = new MemberListController();
-//				pageControllerPath = "/member/list";
-			}else if("/member/add.do".equals(servletPath)) {
-//				pageControllerPath = "/member/add";
-//				pageController = new MemberAddController();
-				if(request.getParameter("email") !=null) {
-					model.put("member",new Member().setEmail(request.getParameter("email")).setName(request.getParameter("name")).setPassword(request.getParameter("password")));
-//					request.setAttribute("member", new Member().setEmail(request.getParameter("email")).setName(request.getParameter("name")).setPassword(request.getParameter("password")));
-				}
-
-			}else if("/member/update.do".equals(servletPath)) {
-//				pageControllerPath = "/member/update";
-//				pageController = new MemberUpdateController();
-				if(request.getParameter("name")!=null) {
-					model.put("member", new Member().setEmail(request.getParameter("email")).setName(request.getParameter("name")).setNo(Integer.parseInt( request.getParameter("no"))));
-//					request.setAttribute("member", new Member().setEmail(request.getParameter("email")).setName(request.getParameter("name")).setPassword(request.getParameter("password")));
-				}else if(request.getParameter("name") == null) {
-					model.put("no", Integer.parseInt(request.getParameter("no")));
-//					request.setAttribute("no", Integer.parseInt(request.getParameter("no")));
-				}
-			}else if("/member/delete.do".equals(servletPath)) {
-//				pageController = new MemberDeleteController();
-				model.put("no", Integer.parseInt(request.getParameter("no")));
-//				pageControllerPath ="/member/delete";
-			}else if("/auth/login.do".equals(servletPath)){
-//				pageController = new AuthLoginController();
-				if(request.getParameter("email") !=null && request.getParameter("password")!=null) {
-					model.put("authMember", new Member().setEmail(request.getParameter("email")).setPassword(request.getParameter("password")));
-				}
-//				pageControllerPath = "/auth/login";
+			
+			if(pageController instanceof DataBinding) {
+				prepareRequestData(request,model,(DataBinding)pageController);
 			}
+			
+			
+			
+			/* USING DATABINDING AND REPLACE IT
+			 * if("/member/list.do".equals(servletPath)) { // pageController = new
+			 * MemberListController(); // pageControllerPath = "/member/list"; }else
+			 * if("/member/add.do".equals(servletPath)) { // pageControllerPath =
+			 * "/member/add"; // pageController = new MemberAddController();
+			 * if(request.getParameter("email") !=null) { model.put("member",new
+			 * Member().setEmail(request.getParameter("email")).setName(request.getParameter
+			 * ("name")).setPassword(request.getParameter("password"))); //
+			 * request.setAttribute("member", new
+			 * Member().setEmail(request.getParameter("email")).setName(request.getParameter
+			 * ("name")).setPassword(request.getParameter("password"))); }
+			 * 
+			 * }else if("/member/update.do".equals(servletPath)) { // pageControllerPath =
+			 * "/member/update"; // pageController = new MemberUpdateController();
+			 * if(request.getParameter("name")!=null) { model.put("member", new
+			 * Member().setEmail(request.getParameter("email")).setName(request.getParameter
+			 * ("name")).setNo(Integer.parseInt( request.getParameter("no")))); //
+			 * request.setAttribute("member", new
+			 * Member().setEmail(request.getParameter("email")).setName(request.getParameter
+			 * ("name")).setPassword(request.getParameter("password"))); }else
+			 * if(request.getParameter("name") == null) { model.put("no",
+			 * Integer.parseInt(request.getParameter("no"))); // request.setAttribute("no",
+			 * Integer.parseInt(request.getParameter("no"))); } }else
+			 * if("/member/delete.do".equals(servletPath)) { // pageController = new
+			 * MemberDeleteController(); model.put("no",
+			 * Integer.parseInt(request.getParameter("no"))); // pageControllerPath
+			 * ="/member/delete"; }else if("/auth/login.do".equals(servletPath)){ //
+			 * pageController = new AuthLoginController(); if(request.getParameter("email")
+			 * !=null && request.getParameter("password")!=null) { model.put("authMember",
+			 * new Member().setEmail(request.getParameter("email")).setPassword(request.
+			 * getParameter("password"))); } // pageControllerPath = "/auth/login"; }
+			 */
 			
 			/*
 			 * else if("/auth/logout.do".equals(servletPath)){
@@ -87,7 +96,6 @@ public class DispatcherServlet extends HttpServlet {
 			 * 
 			 * String viewUrl = (String) request.getAttribute("viewUrl");
 			 */
-			
 			String viewUrl = pageController.execute(model);
 			
 			for(String key: model.keySet()) {
@@ -117,5 +125,32 @@ public class DispatcherServlet extends HttpServlet {
 			rd.forward(request, response);
 		}
 	}
+	
+	
+	
+	private void prepareRequestData(HttpServletRequest request, HashMap<String,Object> model,DataBinding dataBinding) throws Exception {
+		Object [] dataBinders = dataBinding.getDataBinders();
+		String dataName = null;
+		Class<?> dataType = null;
+		Object dataObj = null;
+		for (int i=0; i<dataBinders.length; i+=2) {
+			dataName = (String) dataBinders[i];
+			dataType = (Class<?>) dataBinders[i+1];
+			dataObj = ServletRequestDataBinder.bind(request,dataType,dataName);
+			model.put(dataName,dataObj);
+		}
+		
+	}
+	
 
-}
+}//end class
+
+
+
+
+
+
+
+
+
+

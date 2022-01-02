@@ -1,28 +1,44 @@
 package controller;
-
+import bind.DataBinding;
 import java.util.Map;
 import dao.MysqlMemberDao;
 import vo.Member;
-public class MemberAddController implements Controller {
+public class MemberAddController implements Controller , DataBinding{
 	MysqlMemberDao memberDao;
 	
+	//Dao is injected by contextLoaderListener
 	public MemberAddController setMemberDao(MysqlMemberDao memberDao) {
 		this.memberDao = memberDao;
 		return this;
 	}
 	
+	public Object[] getDataBinders() {
+		return new Object[] {"member", vo.Member.class};
+	}
+	
+	
 	
 	
 	@Override
 	public String execute(Map<String, Object> model) throws Exception {
-		if(model.get("member")==null) {
+		
+		Member member = (Member)model.get("member");
+		
+		if(member.getEmail() == null) {
 			return "/member/MemberAddForm.jsp";
 		}else {
-//			MysqlMemberDao memberDao = (MysqlMemberDao)model.get("memberDao");
-			Member member = (Member)model.get("member");
 			memberDao.insert(member);
 			return "redirect:list.do";
 		}
+		
+		
+//		if(model.get("member")==null) {
+//			return "/member/MemberAddForm.jsp";
+//		}else {
+////			MysqlMemberDao memberDao = (MysqlMemberDao)model.get("memberDao");
+//			memberDao.insert(member);
+//			return "redirect:list.do";
+//		}
 	}
 
 }
