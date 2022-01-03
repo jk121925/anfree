@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import bind.DataBinding;
 import bind.ServletRequestDataBinder;
+import context.ApplicationContext;
 import controller.AuthLogOutController;
 import controller.AuthLoginController;
 import controller.Controller;
@@ -21,6 +22,7 @@ import controller.MemberAddController;
 import controller.MemberDeleteController;
 import controller.MemberListController;
 import controller.MemberUpdateController;
+import listeners.ContextLoaderListener;
 /**
  * Servlet implementation class DispatcherServlet
  */
@@ -34,18 +36,31 @@ public class DispatcherServlet extends HttpServlet {
 		response.setContentType("text/html; charset = UTF-8");
 		String servletPath = request.getServletPath();
 		try {
-			ServletContext sc = this.getServletContext();
+			
+			/* USE PROPERTIES
+			 * ServletContext sc = this.getServletContext();
+			 */
+			
+			ApplicationContext ctx = ContextLoaderListener.getApplicationContext();
+			
+			
 			HashMap<String,Object>model = new HashMap<String,Object>();
 //			model.put("memberDao", sc.getAttribute("memberDao"));
 			model.put("session", request.getSession());
+			/* USER PROPERTIES
+			 * Controller pageController= (Controller) sc.getAttribute(servletPath);
+			 */
 			
-			String pageControllerPath=null;
-			Controller pageController= (Controller) sc.getAttribute(servletPath);
+			Controller pageController = (Controller) ctx.getBean(servletPath);
 			
+			if(pageController ==null) {
+				throw new Exception("요청한 서비스를 찾을 수 없습니다.");
+			}
 			
 			if(pageController instanceof DataBinding) {
-				prepareRequestData(request,model,(DataBinding)pageController);
+				prepareRequestData(request, model, (DataBinding)pageController);
 			}
+			
 			
 			
 			

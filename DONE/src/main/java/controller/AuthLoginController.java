@@ -2,11 +2,16 @@ package controller;
 
 import java.util.Map;
 
+
 import javax.servlet.http.HttpSession;
 
+import annotation.Component;
 import dao.MysqlMemberDao;
 import vo.Member;
 import bind.DataBinding;
+
+
+@Component("/auth/login.do")
 public class AuthLoginController implements Controller,DataBinding {
 	MysqlMemberDao memberDao;
 	
@@ -23,19 +28,22 @@ public class AuthLoginController implements Controller,DataBinding {
 	@Override
 	public String execute(Map<String, Object> model) throws Exception {
 //		MysqlMemberDao memberDao = (MysqlMemberDao) model.get("memberDao");
-		Member authMember = (Member)model.get("outhMember");
-		
-		if(authMember.getEmail()!=null) {
+		Member authMember = (Member)model.get("authMember");
+		System.out.println(authMember == null);
+		System.out.println(authMember.getEmail());
+		if(authMember.getEmail() == null) {
+			return "/auth/LogInForm.jsp";
+		}else {
 			authMember = memberDao.exist(authMember.getEmail(), authMember.getPassword());
 			if(authMember!=null) {
+				HttpSession session = (HttpSession)model.get("session");
+				session.setAttribute("member",authMember);
 				return "redirect:../member/list.do";
 			}else {
-				return "/auth/logInFail.jsp";
+				return "/auth/LogInFail.jsp";
 			}
-		}else {
-			return "auth/LogInForm.jsp";
-					
 		}
+		
 		
 		
 //		if(model.get("authMember") != null) {

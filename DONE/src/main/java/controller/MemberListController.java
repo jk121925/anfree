@@ -1,7 +1,11 @@
 package controller;
 
 import java.util.Map;
+
+import annotation.Component;
 import dao.MysqlMemberDao;
+
+@Component(value="/member/list.do")
 public class MemberListController implements Controller {
 	MysqlMemberDao memberDao;
 	

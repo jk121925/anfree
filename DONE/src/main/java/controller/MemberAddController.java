@@ -1,8 +1,12 @@
 package controller;
 import bind.DataBinding;
 import java.util.Map;
+
+import annotation.Component;
 import dao.MysqlMemberDao;
 import vo.Member;
+
+@Component("/member/add.do")
 public class MemberAddController implements Controller , DataBinding{
 	MysqlMemberDao memberDao;
 	

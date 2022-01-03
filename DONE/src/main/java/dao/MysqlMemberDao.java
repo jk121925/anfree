@@ -7,10 +7,11 @@ import java.util.*;
 
 import javax.sql.DataSource;
 
+import annotation.Component;
 import vo.Member;
 //import util.DBConnectionPool;
 
-
+@Component("memberDao")
 public class MysqlMemberDao implements MemberDao{
 	/*
 	 * cause knowing DBConnectionPoll Connection connection;

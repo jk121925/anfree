@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
 
+import context.ApplicationContext;
 import controller.AuthLogOutController;
 import controller.AuthLoginController;
 import controller.MemberAddController;
@@ -29,6 +30,11 @@ public class ContextLoaderListener implements ServletContextListener{
 // 	DB connectionPool 사용
 //	DBConnectionPool connPool = null;
 //	BasicDataSource ds = null;
+	static ApplicationContext applicationContext;
+	
+	public static ApplicationContext getApplicationContext() {
+		return applicationContext;
+	}
 	
 	
 	@Override
@@ -44,8 +50,18 @@ public class ContextLoaderListener implements ServletContextListener{
 			memberDao.setDbConnectionPoll(connPool); // must change order
 			*/
 			
-			InitialContext initialContext = new InitialContext();
-			DataSource ds = (DataSource)initialContext.lookup("java:/comp/env/jdbc/donedb");
+			String propertiesPath = sc.getRealPath(sc.getInitParameter("contextConfigLocation"));
+			System.out.println(propertiesPath);
+			applicationContext = new ApplicationContext(propertiesPath);
+			
+			
+			
+			
+			
+			/* USE PROPERTIES
+			 * InitialContext initialContext = new InitialContext(); DataSource ds =
+			 * (DataSource)initialContext.lookup("java:/comp/env/jdbc/donedb");
+			 */
 			
 			
 			
@@ -56,8 +72,11 @@ public class ContextLoaderListener implements ServletContextListener{
 			 * ds.setUsername(sc.getInitParameter("username"));
 			 * ds.setPassword(sc.getInitParameter("password"));
 			 */
-			MysqlMemberDao memberDao = new MysqlMemberDao();
-			memberDao.setDataSource(ds);
+			
+			
+			/* USE PROPERTIES
+			 * MysqlMemberDao memberDao = new MysqlMemberDao(); memberDao.setDataSource(ds);
+			 */
 			
 			/* use connection 
 			memberDao.setConnection(conn);
@@ -67,12 +86,20 @@ public class ContextLoaderListener implements ServletContextListener{
 			 * sc.setAttribute("memberDao", memberDao);
 			 */			
 			
-			sc.setAttribute("/auth/login.do", new AuthLoginController().setMemberDao(memberDao) );
-			sc.setAttribute("/auth/logout.do", new AuthLogOutController());
-			sc.setAttribute("/member/list.do", new MemberListController().setMemberDao(memberDao));
-			sc.setAttribute("/member/add.do", new MemberAddController().setMemberDao(memberDao));
-			sc.setAttribute("/member/delete.do", new MemberDeleteController().setMemberDao(memberDao));
-			sc.setAttribute("/member/update.do", new MemberUpdateController().setMemberDao(memberDao));
+			/* USE PROPERTIES
+			 * sc.setAttribute("/auth/login.do", new
+			 * AuthLoginController().setMemberDao(memberDao) );
+			 * sc.setAttribute("/auth/logout.do", new AuthLogOutController());
+			 * sc.setAttribute("/member/list.do", new
+			 * MemberListController().setMemberDao(memberDao));
+			 * sc.setAttribute("/member/add.do", new
+			 * MemberAddController().setMemberDao(memberDao));
+			 * sc.setAttribute("/member/delete.do", new
+			 * MemberDeleteController().setMemberDao(memberDao));
+			 * sc.setAttribute("/member/update.do", new
+			 * MemberUpdateController().setMemberDao(memberDao));
+			 */
+		
 		}catch(Throwable e) {
 			e.printStackTrace();
 		}

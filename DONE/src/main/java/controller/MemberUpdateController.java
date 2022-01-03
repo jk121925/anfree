@@ -2,9 +2,12 @@ package controller;
 
 import java.util.Map;
 
+import annotation.Component;
 import dao.MysqlMemberDao;
 import vo.Member;
 import bind.DataBinding;
+
+@Component("/member/update.do")
 public class MemberUpdateController implements Controller, DataBinding {
 	MysqlMemberDao memberDao;
 	
