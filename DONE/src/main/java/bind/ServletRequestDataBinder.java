@@ -16,7 +16,6 @@ public class ServletRequestDataBinder {
 		Set<String> paramNames = request.getParameterMap().keySet();
 		Object dataObject = dataType.newInstance();
 		Method m = null;
-		
 		for(String paramName : paramNames) {
 			m = findSetter(dataType,paramName);
 			if(m!=null) {
@@ -50,7 +49,7 @@ public class ServletRequestDataBinder {
 			return new Long(value);
 		}else if(type.getName().equals("boolean")|| type == Boolean.class) {
 			return new Boolean(value);
-		}else if(type == Data.class) {
+		}else if(type == Date.class) {
 			return java.sql.Date.valueOf(value);
 		}else {
 			return value;
