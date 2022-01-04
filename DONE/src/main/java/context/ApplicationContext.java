@@ -19,6 +19,7 @@ public class ApplicationContext {
 	}
 	
 	public ApplicationContext(String propertiesPath) throws Exception{
+		System.out.println("response ApplicationContext from ContextLoaderListener");
 		Properties props = new Properties();
 		props.load(new FileReader(propertiesPath));
 	
@@ -33,8 +34,7 @@ public class ApplicationContext {
 		String key =null;
 		for(Class<?> clazz : list) {
 			key = clazz.getAnnotation(Component.class).value();
-			System.out.println("ApplicationContext" + key);
-			System.out.println(clazz == null);
+			System.out.println("ApplicationContext has " + key);
 			objTable.put(key,clazz.newInstance());
 		}
 	}
@@ -60,6 +60,9 @@ public class ApplicationContext {
 	}
 	
 	private void injectDependency() throws Exception{
+		//각 memberDao와 같은 context level의 객체들이 필요한 곳에 주입해줘야 한다.
+		//e.g. MemberListController는 memberDao가 필요하므로 memberDao를 주입해주는데
+		//이때 set Method가 있게 되면 이를 call 해서 넣어준다.
 		for(String key: objTable.keySet()) {
 			if(!key.startsWith("jndi.")) {
 				callSetter(objTable.get(key));
@@ -80,6 +83,7 @@ public class ApplicationContext {
 	}
 	
 	private Object findObjectByType(Class<?> type) {
+		//이때 objTable value에 있는 값을 주입해 줌으로 memberDao -> MemberListController에게 주입
 		for(Object obj : objTable.values()) {
 			if(type.isInstance(obj)) {
 				return obj;

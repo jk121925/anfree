@@ -40,6 +40,7 @@ public class ContextLoaderListener implements ServletContextListener{
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
 		try {
+			System.out.println("Start ContextInitialization");
 			ServletContext sc = event.getServletContext();
 			
 			
@@ -51,7 +52,7 @@ public class ContextLoaderListener implements ServletContextListener{
 			*/
 			
 			String propertiesPath = sc.getRealPath(sc.getInitParameter("contextConfigLocation"));
-			System.out.println(propertiesPath);
+			System.out.println("Call applicationContext : ContextLoader -> applicationContext");
 			applicationContext = new ApplicationContext(propertiesPath);
 			
 			

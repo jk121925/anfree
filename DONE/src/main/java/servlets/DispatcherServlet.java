@@ -47,6 +47,9 @@ public class DispatcherServlet extends HttpServlet {
 			HashMap<String,Object>model = new HashMap<String,Object>();
 //			model.put("memberDao", sc.getAttribute("memberDao"));
 			model.put("session", request.getSession());
+			for(String key : model.keySet()) {
+				System.out.println(key);
+			}
 			/* USER PROPERTIES
 			 * Controller pageController= (Controller) sc.getAttribute(servletPath);
 			 */
@@ -58,6 +61,7 @@ public class DispatcherServlet extends HttpServlet {
 			}
 			
 			if(pageController instanceof DataBinding) {
+				// Controller에서 필요한 data를 자동적으로 만들어 두는 과정 model에
 				prepareRequestData(request, model, (DataBinding)pageController);
 			}
 			
@@ -111,12 +115,14 @@ public class DispatcherServlet extends HttpServlet {
 			 * 
 			 * String viewUrl = (String) request.getAttribute("viewUrl");
 			 */
-			String viewUrl = pageController.execute(model);
 			
+			
+			
+			String viewUrl = pageController.execute(model);
+			System.out.println(viewUrl);
 			for(String key: model.keySet()) {
 				request.setAttribute(key, model.get(key));
 			}
-			
 			if(viewUrl.startsWith("redirect:")) {
 //				if(request.getAttribute("correctMember")!=null) {
 //					HttpSession session  = request.getSession();
