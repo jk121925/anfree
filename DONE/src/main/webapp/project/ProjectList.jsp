@@ -16,14 +16,14 @@
 <jsp:useBean id="projects" scope="request" class="java.util.ArrayList" type="java.util.ArrayList<vo.Project>"/>
 
 <table border="1">
-		<tr>
-			<th>번호</th>
-			<th>제목</th>
-			<th>시작일</th>
-			<th>종료일</th>
-			<th>상태</th>
-		
-		</tr>
+	<tr>
+		<th>번호</th>
+		<th>제목</th>
+		<th>시작일</th>
+		<th>종료일</th>
+		<th>상태</th>
+	
+	</tr>
 		<%
 		for(Project project: projects){
 		%>
