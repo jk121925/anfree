@@ -48,12 +48,11 @@ public class DispatcherServlet extends HttpServlet {
 //			model.put("memberDao", sc.getAttribute("memberDao"));
 			model.put("session", request.getSession());
 			for(String key : model.keySet()) {
-				System.out.println(key);
+				System.out.println("dispatcherServlet " + key);
 			}
 			/* USER PROPERTIES
 			 * Controller pageController= (Controller) sc.getAttribute(servletPath);
 			 */
-			
 			Controller pageController = (Controller) ctx.getBean(servletPath);
 			
 			if(pageController ==null) {

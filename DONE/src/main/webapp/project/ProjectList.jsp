@@ -29,7 +29,7 @@
 		%>
 		<tr>
 			<td><%=project.getNo() %></td>
-			<td><%=project.getTitle() %></td>
+			<td><a href='update.do?no=<%=project.getNo() %>'><%=project.getTitle() %></a></td>
 			<td><%=project.getStartDate() %></td>
 			<td><%=project.getEndDate() %></td>
 			<td><%=project.getState() %></td>
