@@ -22,6 +22,7 @@
 		<th>시작일</th>
 		<th>종료일</th>
 		<th>상태</th>
+		<th><th>
 	
 	</tr>
 		<%
@@ -33,6 +34,7 @@
 			<td><%=project.getStartDate() %></td>
 			<td><%=project.getEndDate() %></td>
 			<td><%=project.getState() %></td>
+			<td><a href='delete.do?no=<%=project.getNo() %>'>delete</a></td>
 		</tr>
 		<%} %>
 </table>

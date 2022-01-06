@@ -19,7 +19,6 @@ public class ApplicationContext {
 	}
 	
 	public ApplicationContext(String propertiesPath) throws Exception{
-		System.out.println("response ApplicationContext from ContextLoaderListener");
 		Properties props = new Properties();
 		props.load(new FileReader(propertiesPath));
 	
@@ -34,7 +33,6 @@ public class ApplicationContext {
 		String key =null;
 		for(Class<?> clazz : list) {
 			key = clazz.getAnnotation(Component.class).value();
-			System.out.println("ApplicationContext has " + key);
 			objTable.put(key,clazz.newInstance());
 		}
 	}
