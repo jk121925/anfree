@@ -13,6 +13,9 @@ import javax.servlet.annotation.WebListener;
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import context.ApplicationContext;
 import controller.AuthLogOutController;
@@ -23,7 +26,7 @@ import controller.MemberListController;
 import controller.MemberUpdateController;
 import dao.MysqlMemberDao;
 import util.DBConnectionPool;
-
+import java.io.*;
 @WebListener
 public class ContextLoaderListener implements ServletContextListener{
 //	Connection conn;
@@ -41,7 +44,8 @@ public class ContextLoaderListener implements ServletContextListener{
 	public void contextInitialized(ServletContextEvent event) {
 		try {
 			System.out.println("Start ContextInitialization");
-			ServletContext sc = event.getServletContext();
+			// datasource used
+//			ServletContext sc = event.getServletContext();
 			
 			
 			/* connection poll
@@ -50,13 +54,23 @@ public class ContextLoaderListener implements ServletContextListener{
 			connPool = new DBConnectionPool(sc.getInitParameter("driver"),sc.getInitParameter("url"),sc.getInitParameter("username"),sc.getInitParameter("password"));
 			memberDao.setDbConnectionPoll(connPool); // must change order
 			*/
+			// datasource used
+//			String propertiesPath = sc.getRealPath(sc.getInitParameter("contextConfigLocation"));
+//			System.out.println("Call applicationContext : ContextLoader -> applicationContext");
+//			applicationContext = new ApplicationContext(propertiesPath);
 			
+			applicationContext = new ApplicationContext();
+			
+			String resource = "dao/mybatis-config.xml";
+			InputStream inputStream = Resources.getResourceAsStream(resource);
+			SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+			
+			applicationContext.addBean("sqlSessionFactory", sqlSessionFactory);
+			ServletContext sc = event.getServletContext();
 			String propertiesPath = sc.getRealPath(sc.getInitParameter("contextConfigLocation"));
-			System.out.println("Call applicationContext : ContextLoader -> applicationContext");
-			applicationContext = new ApplicationContext(propertiesPath);
-			
-			
-			
+			applicationContext.prepareObjectByProperties(propertiesPath);
+			applicationContext.prepareObjectsByAnnotation("");
+			applicationContext.injectDependency();
 			
 			
 			/* USE PROPERTIES
