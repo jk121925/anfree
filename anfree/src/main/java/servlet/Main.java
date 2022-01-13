@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import vo.Member;
+
 
 @WebServlet("/")
 public class Main extends HttpServlet {
@@ -23,7 +25,7 @@ public class Main extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		response.getWriter().append("This page is anfree page");
+		
 		RequestDispatcher rd = request.getRequestDispatcher("/project/main.jsp");
 		rd.forward(request, response);
 		

@@ -36,7 +36,6 @@ public class MemberList extends HttpServlet {
 			rs = stmt.executeQuery("SELECT ID, NAME, CRE_DATE, SEX, TODOSTATE FROM MEMBER");
 
 			while(rs.next()) {
-				System.out.println(rs.getString("TODOSTATE"));
 				members.add(new Member().setCRE_DATE(rs.getDate("CRE_DATE")).setId(rs.getString("ID")).setName(rs.getString("Name")).setSex(rs.getString("SEX")).setTodoState(rs.getString("TODOSTATE")));
 			}
 			request.setAttribute("members", members);

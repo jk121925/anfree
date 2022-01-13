@@ -10,7 +10,15 @@ public class Member {
 	private Date MOD_DATE;
 	private String sex;
 	private String todoState;
+	private int no;
 	
+	public int getNo() {
+		return no;
+	}
+	public Member setNo(int no) {
+		this.no = no;
+		return this;
+	}
 	public String getTodoState() {
 		return todoState;
 	}
