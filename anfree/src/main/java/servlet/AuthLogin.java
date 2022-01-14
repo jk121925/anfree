@@ -39,8 +39,8 @@ public class AuthLogin extends HttpServlet {
 		ResultSet rs = null;
 		
 		try {
-			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/anfreedb","anfree_main","brokenwrist*0812");
+			Class.forName(this.getInitParameter("driver"));
+			conn = DriverManager.getConnection(this.getInitParameter("driver"),this.getInitParameter("username"),this.getInitParameter("password"));
 			stmt = conn.prepareStatement("SELECT MNO,NAME,ID FROM MEMBER WHERE ID = ? AND PASSWORD = ?");
 			stmt.setString(1, request.getParameter("id"));
 			stmt.setString(2, request.getParameter("password"));

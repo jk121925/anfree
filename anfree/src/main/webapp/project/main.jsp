@@ -22,11 +22,12 @@
 	
 	<% if(loginMember.getName()!=null){ %>
 	<form action="AddTodo" method="post">
-		you have to?<input type='checkbox' id='force' name='force' value='2'>
-		you want? <input type='checkbox' id='want' name='want' value='1'>	
-		add your anxity <input type='text' id='todo' name ='todo'>
+		<input type='hidden' name='no' value='<%=loginMember.getNo() %>'>
+		you have to?<input type='checkbox' id='force' name='force' value='1'>	
+		Todo <input type='text' id='todo' name ='todo'>
 		<input type='submit' value="anxity">
 	</form>
 	<%} %>
+	
 </body>
 </html>
