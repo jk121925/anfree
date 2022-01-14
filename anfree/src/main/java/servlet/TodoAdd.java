@@ -6,11 +6,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import vo.Member;
 
 
 @WebServlet("/AddTodo")
@@ -34,16 +37,17 @@ public class TodoAdd extends HttpServlet {
 		PreparedStatement stmt = null;
 		
 		try {
-			Class.forName(this.getInitParameter("driver"));
-			conn = DriverManager.getConnection(this.getInitParameter("driver"),this.getInitParameter("username"),this.getInitParameter("password"));
+			ServletContext sc = this.getServletContext();
+			Class.forName(sc.getInitParameter("driver"));
+			conn = DriverManager.getConnection(sc.getInitParameter("url"),sc.getInitParameter("username"),sc.getInitParameter("password"));
 			stmt = conn.prepareStatement("INSERT INTO TODO (TODO,FORCING,START_TIME,MNO) VALUES (?,?,NOW(),?)");
 			stmt.setString(1, request.getParameter("todo"));
 			stmt.setInt(2, Integer.parseInt(request.getParameter("force")));
 			stmt.setInt(3, Integer.parseInt(request.getParameter("no")));
 			stmt.executeUpdate();
 			
-
-			request.setAttribute("loginMember", request.getAttribute("loginMember"));
+			System.out.println(request.getAttribute("no"));
+			request.setAttribute("no", request.getAttribute("no"));
 			RequestDispatcher rd = request.getRequestDispatcher("./todolist");
 			rd.forward(request, response);
 //			response.sendRedirect("./TodoList");

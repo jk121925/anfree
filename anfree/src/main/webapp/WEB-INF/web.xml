@@ -5,24 +5,28 @@ xmlns="http://xmlns.jcp.org/xml/ns/javaee"
 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" 
 id="WebApp_ID" version="3.1">
 
-	<servlet>
-		<servlet-name>AuthLogin</servlet-name>
-		<servlet-class>servlet.AuthLogin</servlet-class>
-	</servlet>
-	<init-param>
+	
+	
+	<context-param>
 		<param-name>driver</param-name>
-		<param-value>com.sql.jdbc.Driver</param-value>
-	</init-param>
+		<param-value>com.mysql.jdbc.Driver</param-value>
+	</context-param>
 
-	<init-param>
+	<context-param>
+		<param-name>url</param-name>
+		<param-value>jdbc:mysql://localhost/anfreedb</param-value>
+	</context-param>
+
+	<context-param>
 		<param-name>username</param-name>
 		<param-value>anfree_main</param-value>
-	</init-param>
-	<init-param>
+	</context-param>
+	<context-param>
 		<param-name>password</param-name>
 		<param-value>brokenwrist*0812</param-value>
-	</init-param>
-</web-app>
+	</context-param>
+	
 
+</web-app>
 
 

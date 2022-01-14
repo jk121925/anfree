@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,8 +31,9 @@ public class MemberList extends HttpServlet {
 		ArrayList <Member> members = new ArrayList<Member>();
 		
 		try {
-			Class.forName(this.getInitParameter("driver"));
-			conn = DriverManager.getConnection(this.getInitParameter("driver"),this.getInitParameter("username"),this.getInitParameter("password"));
+			ServletContext sc = this.getServletContext();
+			Class.forName(sc.getInitParameter("driver"));
+			conn = DriverManager.getConnection(sc.getInitParameter("url"),sc.getInitParameter("username"),sc.getInitParameter("password"));
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery("SELECT ID, NAME, CRE_DATE, SEX, TODOSTATE FROM MEMBER");
 

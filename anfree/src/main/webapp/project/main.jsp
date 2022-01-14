@@ -22,7 +22,8 @@
 	
 	<% if(loginMember.getName()!=null){ %>
 	<form action="AddTodo" method="post">
-		<input type='hidden' name='no' value='<%=loginMember.getNo() %>'>
+		<%=loginMember.getNo() %>
+		<input type='text' name='no' value='<%=loginMember.getNo() %>' readyonly>
 		you have to?<input type='checkbox' id='force' name='force' value='1'>	
 		Todo <input type='text' id='todo' name ='todo'>
 		<input type='submit' value="anxity">

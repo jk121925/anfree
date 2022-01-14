@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,17 +29,22 @@ public class TodoList extends HttpServlet {
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	}
+
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Connection conn =null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		Member member = (Member) request.getAttribute("loginMember");
 		ArrayList<Todo> todoLists = new ArrayList<Todo>();
 		try {
 
-			Class.forName(this.getInitParameter("driver"));
-			conn = DriverManager.getConnection(this.getInitParameter("driver"),this.getInitParameter("username"),this.getInitParameter("password"));
+			ServletContext sc = this.getServletContext();
+			Class.forName(sc.getInitParameter("driver"));
+			conn = DriverManager.getConnection(sc.getInitParameter("url"),sc.getInitParameter("username"),sc.getInitParameter("password"));
 			stmt = conn.prepareStatement("SELECT MNO,TODO,FORCING,START_TIME,STATE,END_TIME FROM TODO WHERE MNO=?");
-			stmt.setInt(1, member.getNo());
+			stmt.setInt(1, (int) request.getAttribute("no"));
 			
 			rs = stmt.executeQuery();
 			
@@ -50,15 +56,6 @@ public class TodoList extends HttpServlet {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		
-		
-		
-	}
-
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 }

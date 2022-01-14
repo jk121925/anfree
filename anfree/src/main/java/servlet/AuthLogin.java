@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -39,8 +40,9 @@ public class AuthLogin extends HttpServlet {
 		ResultSet rs = null;
 		
 		try {
-			Class.forName(this.getInitParameter("driver"));
-			conn = DriverManager.getConnection(this.getInitParameter("driver"),this.getInitParameter("username"),this.getInitParameter("password"));
+			ServletContext sc = this.getServletContext();
+			Class.forName(sc.getInitParameter("driver"));
+			conn = DriverManager.getConnection(sc.getInitParameter("url"),sc.getInitParameter("username"),sc.getInitParameter("password"));
 			stmt = conn.prepareStatement("SELECT MNO,NAME,ID FROM MEMBER WHERE ID = ? AND PASSWORD = ?");
 			stmt.setString(1, request.getParameter("id"));
 			stmt.setString(2, request.getParameter("password"));
