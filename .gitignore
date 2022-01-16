@@ -99,4 +99,5 @@ Servers/
 Done/
 *.xml
 WEB-INF/*.xml
+web.xml
 # End of https://www.toptal.com/developers/gitignore/api/eclipse,java
