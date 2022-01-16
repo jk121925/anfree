@@ -1,4 +1,6 @@
 <%@ page import="vo.Member" %>
+<%@ page import="vo.Todo" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -8,6 +10,7 @@
 <title>Insert title here</title>
 </head>
 <jsp:useBean id="loginMember" scope='session' class="vo.Member" type="vo.Member"/>
+<jsp:useBean id="TodoLists" scope ='request' class='java.util.ArrayList' type='java.util.ArrayList<Todo>'/>
 <body>
 
 <% if(loginMember.getName()==null) {%>
@@ -23,12 +26,20 @@
 	<% if(loginMember.getName()!=null){ %>
 	<form action="AddTodo" method="post">
 		<%=loginMember.getNo() %>
-		<input type='text' name='no' value='<%=loginMember.getNo() %>' readyonly>
+		<input type='hidden' id='no' name='no' value=<%=loginMember.getNo() %>>
 		you have to?<input type='checkbox' id='force' name='force' value='1'>	
 		Todo <input type='text' id='todo' name ='todo'>
 		<input type='submit' value="anxity">
 	</form>
 	<%} %>
+	
+	<% if(!TodoLists.isEmpty()){ 
+		for(Todo todo: TodoLists){
+		
+	%>
+		<div><%=todo.getMno() %> <%=todo.getTodo() %> <%=todo.getState() %></div>
+	<%} }%>
+	
 	
 </body>
 </html>

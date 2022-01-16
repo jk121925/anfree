@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -44,7 +45,7 @@ public class TodoList extends HttpServlet {
 			Class.forName(sc.getInitParameter("driver"));
 			conn = DriverManager.getConnection(sc.getInitParameter("url"),sc.getInitParameter("username"),sc.getInitParameter("password"));
 			stmt = conn.prepareStatement("SELECT MNO,TODO,FORCING,START_TIME,STATE,END_TIME FROM TODO WHERE MNO=?");
-			stmt.setInt(1, (int) request.getAttribute("no"));
+			stmt.setInt(1, Integer.parseInt(request.getParameter("no")));
 			
 			rs = stmt.executeQuery();
 			
@@ -52,6 +53,10 @@ public class TodoList extends HttpServlet {
 				todoLists.add(new Todo().setMno(rs.getInt("MNO")).setTodo(rs.getString("TODO")).setForcing(rs.getInt("FORCING")).setState(rs.getInt("STATE")));
 			}
 			
+			request.setAttribute("TodoLists", todoLists);
+			
+			RequestDispatcher rd = request.getRequestDispatcher("./");
+			rd.forward(request, response);
 			
 		}catch(Exception e) {
 			e.printStackTrace();

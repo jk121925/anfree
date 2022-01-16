@@ -35,7 +35,6 @@ public class TodoAdd extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
-		
 		try {
 			ServletContext sc = this.getServletContext();
 			Class.forName(sc.getInitParameter("driver"));
@@ -46,7 +45,8 @@ public class TodoAdd extends HttpServlet {
 			stmt.setInt(3, Integer.parseInt(request.getParameter("no")));
 			stmt.executeUpdate();
 			
-			System.out.println(request.getAttribute("no"));
+			
+			
 			request.setAttribute("no", request.getAttribute("no"));
 			RequestDispatcher rd = request.getRequestDispatcher("./todolist");
 			rd.forward(request, response);
