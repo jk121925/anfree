@@ -98,4 +98,5 @@ hs_err_pid*
 Servers/
 Done/
 *.xml
+.\anfree\src\main\webapp\WEB-INF\web.xml
 # End of https://www.toptal.com/developers/gitignore/api/eclipse,java
