@@ -50,12 +50,12 @@ public class AuthLogin extends HttpServlet {
 			rs = stmt.executeQuery();
 			HttpSession session = request.getSession();
 			if(rs.next()) {
-				session.setAttribute("loginMember", new Member ().setName(rs.getString("NAME")).setId(rs.getString("ID")).setNo(rs.getInt("MNO")) );
+				session.setAttribute("loginMember", new Member ().setName(rs.getString("NAME")).setId(rs.getString("ID")).setNo(rs.getInt("MNO")));
 			}else {
 				session.setAttribute("loginMember", null);
 			}
 			
-			response.sendRedirect("./");
+			response.sendRedirect("todolist");
 //			RequestDispatcher rd = request.getRequestDispatcher("./");
 //			rd.forward(request, response);
 			

@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import vo.Member;
 
@@ -33,7 +34,7 @@ public class TodoAdd extends HttpServlet {
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn = null;
+		Connection conn = null; 
 		PreparedStatement stmt = null;
 		try {
 			ServletContext sc = this.getServletContext();
@@ -45,12 +46,13 @@ public class TodoAdd extends HttpServlet {
 			stmt.setInt(3, Integer.parseInt(request.getParameter("no")));
 			stmt.executeUpdate();
 			
+			HttpSession session = request.getSession();
+			session.setAttribute("loginMember", new Member().setNo(Integer.parseInt(request.getParameter("no"))));
 			
 			
-			request.setAttribute("no", request.getAttribute("no"));
-			RequestDispatcher rd = request.getRequestDispatcher("./todolist");
-			rd.forward(request, response);
-//			response.sendRedirect("./TodoList");
+			
+			response.sendRedirect("todolist");
+			
 			
 		}catch(Exception e){
 			e.printStackTrace();

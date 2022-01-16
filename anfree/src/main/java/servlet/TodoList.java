@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import vo.Member;
 import vo.Todo;
@@ -30,11 +31,6 @@ public class TodoList extends HttpServlet {
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-	}
-
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Connection conn =null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -44,23 +40,34 @@ public class TodoList extends HttpServlet {
 			ServletContext sc = this.getServletContext();
 			Class.forName(sc.getInitParameter("driver"));
 			conn = DriverManager.getConnection(sc.getInitParameter("url"),sc.getInitParameter("username"),sc.getInitParameter("password"));
-			stmt = conn.prepareStatement("SELECT MNO,TODO,FORCING,START_TIME,STATE,END_TIME FROM TODO WHERE MNO=?");
-			stmt.setInt(1, Integer.parseInt(request.getParameter("no")));
-			
-			rs = stmt.executeQuery();
-			
-			while(rs.next()) {
-				todoLists.add(new Todo().setMno(rs.getInt("MNO")).setTodo(rs.getString("TODO")).setForcing(rs.getInt("FORCING")).setState(rs.getInt("STATE")));
+			HttpSession session = request.getSession();
+			Member member = (Member) session.getAttribute("loginMember");
+			System.out.println(member.getNo());
+			if(member.getNo() !=0) {
+				stmt = conn.prepareStatement("SELECT m.mno, m.id, m.todostate, t.todo, t.start_time, t.state "
+						+ "from member m "
+						+ "inner join todo t "
+						+ "on m.mno = t.mno "
+						+ "where m.mno = ? AND date(t.start_time)=date(now())");
+				stmt.setInt(1, member.getNo());
+				
+				rs = stmt.executeQuery();
+				while(rs.next()) {
+					todoLists.add(new Todo().setMno(rs.getInt("MNO")).setTodo(rs.getString("TODO")).setState(rs.getInt("STATE")));
+				}		
 			}
-			
-			request.setAttribute("TodoLists", todoLists);
-			
-			RequestDispatcher rd = request.getRequestDispatcher("./");
-			rd.forward(request, response);
+			session.setAttribute("loginMember", member);
+			session.setAttribute("TodoLists", todoLists);
+			response.sendRedirect("./");
 			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
 
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+	}
 }
