@@ -42,7 +42,6 @@ public class TodoList extends HttpServlet {
 			conn = DriverManager.getConnection(sc.getInitParameter("url"),sc.getInitParameter("username"),sc.getInitParameter("password"));
 			HttpSession session = request.getSession();
 			Member member = (Member) session.getAttribute("loginMember");
-			System.out.println(member.getNo());
 			if(member.getNo() !=0) {
 				stmt = conn.prepareStatement("SELECT m.mno, m.id, m.todostate, t.todo, t.start_time, t.state "
 						+ "from member m "
