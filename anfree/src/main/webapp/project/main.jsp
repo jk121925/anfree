@@ -20,6 +20,7 @@
 		<a href="member">member</a><br>
 	 <h2>Login and trace your todo </h2><br>
 		<a href="login">login</a>
+		<a href="join">join</a>
 	<%} else if(loginMember.getNo()!=0){ %>
 		<h1>Hello! <%=loginMember.getName() %> </h1>
 		<h2>how many member clear todo!</h2><br>
