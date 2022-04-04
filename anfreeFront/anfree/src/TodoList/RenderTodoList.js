@@ -1,17 +1,14 @@
 import { render } from "@testing-library/react";
 import React, {Component} from "react";
+import TodoMemoDivRender from "./TodoMemoDiv";
 import "./TodoElement.css"
-import MemoInput from "./MemoInput.js";
-
-
-
 
 // mode, contents
 class RenderTodoList extends Component{
     constructor(props){
         super(props);
         this.actionMode = 'writeMode';
-        this.wirteContentMode = 'todoList';
+        this.writeContentMode = 'todoList';
         this.currentSelector = -1;
         this.state={
             pressShiftCnt :0,
@@ -54,8 +51,8 @@ class RenderTodoList extends Component{
              * ----> class로 만들어서 memo랑 같이 관리하자 ㅇㅇ 이게 답인듯
              */
             if(this.actionMode === 'selectorMode' && e.key === '/'){
-                if(this.wirteContentMode === 'todoList') this.wirteContentMode = 'memoList';
-                else this.wirteContentMode = 'todoList';
+                if(this.writeContentMode === 'todoList') this.writeContentMode = 'memoList';
+                else this.writeContentMode = 'todoList';
                 this.forceUpdate();
             }
 
@@ -90,7 +87,6 @@ class RenderTodoList extends Component{
                     if(this.actionMode==='writeMode' && this.props._contents.length!==0){
                         this.currentSelector = 0;
                         this.actionMode = 'selectorMode'
-                        this.props.modeChange('selectorMode')
                     }else if(this.actionMode === 'selectorMode'){
                         this.currentSelector = (this.currentSelector === this.props._contents.length-1)? this.props._contents.length-1 : this.currentSelector+1;                        
                     }
@@ -98,7 +94,6 @@ class RenderTodoList extends Component{
                     if(this.actionMode === 'selectorMode'){
                         if(this.currentSelector === 0){
                             this.actionMode ='writeMode'
-                            this.props.modeChange('selectorMode')
                         }else{
                             this.currentSelector = (this.currentSelector === 0)? 0 : this.currentSelector-1;
                         }
@@ -112,71 +107,14 @@ class RenderTodoList extends Component{
 
 
 
-
-    makeTodoElementByOrder(selectNumber, mode){
-        
-        var renderList =[];
-        var renderContainer = Array.from(this.props._contents);
-        var i = 0;
-        if(mode === 'selectorMode'){
-            if(this.wirteContentMode === 'memoList'){
-                while(i<renderContainer.length){
-                    if(selectNumber!==-1 && i === selectNumber){
-                        renderList.push(<div className="todoMainElement-now" key={renderContainer[i].todolist}>{renderContainer[i].todolist}</div>);
-                        console.log('i"m renderign' , this.props._contents);
-                        renderList.push(<MemoInput
-                            _memoContents = {renderContainer[i]}
-                            callUpperUpdateFunc={function(updateMemo){
-                                console.log(updateMemo);
-                                var updateMemos = Array.from(this.props._contents);
-                                for(var j=0; j<updateMemos.length; j++){
-                                    if(updateMemos.todolist === updateMemo.todolist){
-                                        updateMemos[j] = updateMemo;
-                                        break;
-                                    }
-                                }
-                                this.props.updateContentsTodoList(updateMemos);
-                            }.bind(this)}
-                        ></MemoInput>)
-                        // let MemoList =[];
-                        for(let k=0; k<renderContainer[i].memoList.length; k++){
-                            renderList.push(<div className="memoElement-now" key ={renderContainer[i].memoList[k]}>{renderContainer[i].memoList[k]}</div>)
-                        }
-
-                    }else{
-                        renderList.push(<div className="todoMainElement" key={renderContainer[i].todolist}>{renderContainer[i].todolist}</div>);
-                    }
-                    i=i+1;
-                }
-            }else{
-                while(i<renderContainer.length){
-                    if(selectNumber!==-1 && i === selectNumber){
-                        renderList.push(<div className="todoMainElement-now" key={renderContainer[i].todolist}>{renderContainer[i].todolist}</div>);
-                    }else{
-                        renderList.push(<div className="todoMainElement" key={renderContainer[i].todolist}>{renderContainer[i].todolist}</div>);
-                    }
-                    i=i+1;
-                }
-            }
-        }else{
-            //render default -> input todolist
-            while(i<renderContainer.length){
-                renderList.push(<div className="todoMainElement" key={renderContainer[i].todolist}>{renderContainer[i].todolist}</div>);
-                i=i+1;
-            }
-            
-            
-        }
-        return renderList;
-    }
-
-
     render(){
-        var renderList = this.makeTodoElementByOrder(this.currentSelector,this.actionMode);
         return(
-            <div>
-                {renderList}
-            </div>
+            <TodoMemoDivRender 
+            _contents={this.props._contents}
+            _mode = {this.actionMode}
+            _currentSelector = {this.currentSelector}
+            _writeContentMode = {this.writeContentMode}
+            ></TodoMemoDivRender>
             
 
         )

@@ -1,11 +1,17 @@
 .todoMainElement{
     margin: 5px 5px;
     color : greenyellow;
+
+    text-align: left;
+    text-indent: 10px;
     
     
 }
 
 .todoMainElement-now{
+    text-align: left;
+    text-indent: 10px;
+
     margin: 5px 5px;
     border-radius: 30px;
     color : rgb(255, 255, 255);
