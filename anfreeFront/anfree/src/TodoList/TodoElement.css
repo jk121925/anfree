@@ -1,0 +1,14 @@
+.todoMainElement{
+    margin: 5px 5px;
+    color : greenyellow;
+    
+    
+}
+
+.todoMainElement-now{
+    margin: 5px 5px;
+    border-radius: 30px;
+    color : rgb(255, 255, 255);
+    background-color: rgb(139, 137, 133);
+    box-shadow: 3px 3px 5px 0.5px gray;
+}
