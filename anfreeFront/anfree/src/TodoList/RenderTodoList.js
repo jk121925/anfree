@@ -114,6 +114,7 @@ class RenderTodoList extends Component{
             _mode = {this.actionMode}
             _currentSelector = {this.currentSelector}
             _writeContentMode = {this.writeContentMode}
+            _updateContentsTodoList = {this.props.updateContentsTodoList()}
             ></TodoMemoDivRender>
             
 

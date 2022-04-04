@@ -18,3 +18,7 @@
     background-color: rgb(139, 137, 133);
     box-shadow: 3px 3px 5px 0.5px gray;
 }
+
+.memoInput{
+    background-color: aqua;
+}

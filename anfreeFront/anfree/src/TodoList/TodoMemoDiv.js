@@ -1,4 +1,4 @@
-import React from "react";
+import React ,{useState}from "react";
 import MemoInput from "./MemoInput";
 import "./TodoElement.css"
 
@@ -15,10 +15,11 @@ function MemoDiv({memoElement,todoElement}){
 
 
 function TodoMemoDivRender({_contents,_mode,_currentSelector,_writeContentMode}){
+    
     var returnList =[]
     var renderContainer = Array.from(_contents);
     var i=0;
-
+    
     console.log(_contents,_mode,_currentSelector,_writeContentMode);
 
     if(_mode === 'selectorMode'){
@@ -27,10 +28,15 @@ function TodoMemoDivRender({_contents,_mode,_currentSelector,_writeContentMode})
                 returnList.push(
                     <div className="todoMainElement-now" key={renderContainer[i].todolist}>
                         {renderContainer[i].todolist}
-                        <MemoInput></MemoInput>
-                        {renderContainer[i].memolist.map(memoElement=>(
-                            <MemoDiv memoElement={memoElement} todoElement={renderContainer[i].todolist}/>
-                        ))}
+                        <div className="memoInput">
+                            <MemoInput
+                                _memoContents = {renderContainer}
+                                _memoIdx = {_currentSelector}
+                            ></MemoInput>
+                            {renderContainer[i].memolist.map(memoElement=>(
+                                <MemoDiv memoElement={memoElement} todoElement={renderContainer[i].todolist}/>
+                            ))}
+                        </div>
                     </div>
                 );
             }else{
