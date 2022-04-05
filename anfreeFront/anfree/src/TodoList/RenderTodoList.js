@@ -99,6 +99,7 @@ class RenderTodoList extends Component{
                         }
                     }
                 }
+                console.log(this.props._contents);
                 this.forceUpdate();
             }//end arrow if test
             
@@ -114,7 +115,6 @@ class RenderTodoList extends Component{
             _mode = {this.actionMode}
             _currentSelector = {this.currentSelector}
             _writeContentMode = {this.writeContentMode}
-            _updateContentsTodoList = {this.props.updateContentsTodoList()}
             ></TodoMemoDivRender>
             
 

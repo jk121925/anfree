@@ -7,11 +7,9 @@ import RenderTodoInput from "./RenderTodoInput.js";
 class Todolist extends Component{
     constructor(props){
       super(props);
-      // this._todoMode = 'writeTodo';
       this.contentsMaxIdx =0;
       this.state={
         contents :[],
-        // _todoMode : 'writeTodo',
       }
     }
     
@@ -32,12 +30,6 @@ class Todolist extends Component{
           }.bind(this)}></RenderTodoInput>
           <RenderTodoList 
             _contents={this.state.contents}
-
-            // modeChange = {function(changeMode){
-            //   console.log("child : todoList call changeMode fucntion " + changeMode)
-            //   this._todoMode = changeMode;
-            //   this.forceUpdate();
-            // }.bind(this)}
 
             updateContentsTodoList={function(updatelist){
               this.setState({

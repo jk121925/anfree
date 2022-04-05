@@ -27,8 +27,8 @@ import React, {Component} from "react";
 // }
 
 
-function MemoInput({_memoContents,_memoIdx}){
-    console.log(_memoContents,_memoIdx);
+function MemoInput({_memoContents,_memoIdx,_setterContents}){
+    console.log(_memoContents,_memoIdx,_setterContents);
     return(
         <input
         type = 'text'
@@ -36,7 +36,10 @@ function MemoInput({_memoContents,_memoIdx}){
             onKeyDown={function(e){
                 if(e.nativeEvent.key === 'Enter'){
                     e.preventDefault();
-                    
+                    var resetMemo = Array.from(_memoContents);
+                    resetMemo[_memoIdx].memolist.push(e.target.value);
+                    _setterContents(resetMemo);
+                    e.target.value=""
                 }
             }.bind(this)}
         >

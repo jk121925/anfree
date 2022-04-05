@@ -1,6 +1,6 @@
 .todoMainElement{
     margin: 5px 5px;
-    color : greenyellow;
+    color : rgb(166, 25, 67);
 
     text-align: left;
     text-indent: 10px;
@@ -20,5 +20,13 @@
 }
 
 .memoInput{
-    background-color: aqua;
+    text-indent: 20px;
+    color :white;
+    background-color: None;
+}
+
+.memoElement{
+    text-indent: 30px;
+    color :white;
+    background-color: None;
 }
