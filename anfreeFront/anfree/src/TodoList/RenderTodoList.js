@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import React, {Component} from "react";
+import React, {Component, memo} from "react";
 import TodoMemoDivRender from "./TodoMemoDiv";
 import "./TodoElement.css"
 
@@ -7,24 +7,37 @@ import "./TodoElement.css"
 class RenderTodoList extends Component{
     constructor(props){
         super(props);
+        //actionMode : writeMode, selectorMode,
         this.actionMode = 'writeMode';
+        // writeContentMode : todoList, memoList
         this.writeContentMode = 'todoList';
-        this.currentSelector = -1;
+        this.currentTodoSelector = -1;
+        this.currentMemoSelector = -1;
         this.state={
             pressShiftCnt :0,
             pressArrowDirection : ''
         }
     }
     
-    swapContents(UpDown){
+    swapTodoContents(UpDown){
         var upDownInt = (UpDown === 'up')? -1 :1;
         var updateContentsList = Array.from(this.props._contents);
-        var temp = updateContentsList[this.currentSelector];
-        updateContentsList[this.currentSelector] = updateContentsList[this.currentSelector+upDownInt];
-        updateContentsList[this.currentSelector+upDownInt] = temp;
+        var temp = updateContentsList[this.currentTodoSelector];
+        updateContentsList[this.currentTodoSelector] = updateContentsList[this.currentTodoSelector+upDownInt];
+        updateContentsList[this.currentTodoSelector+upDownInt] = temp;
         this.props.updateContentsTodoList(updateContentsList);
     }
 
+    swapMemoContents(UpDown){
+        let memoIdx = this.currentMemoSelector;
+        let todoIdx = this.currentTodoSelector;
+        var upDownInt = (UpDown === 'up')? -1 :1;
+        var updateContentsList = Array.from(this.props._contents);
+        var temp = updateContentsList[todoIdx].memolist[memoIdx];
+        updateContentsList[todoIdx].memolist[memoIdx] = updateContentsList[todoIdx].memolist[memoIdx + upDownInt];
+        updateContentsList[todoIdx].memolist[memoIdx+upDownInt] = temp;
+        this.props.updateContentsTodoList(updateContentsList);
+    }
 
     componentDidMount() {
         window.addEventListener('keydown',(e)=>{
@@ -34,11 +47,20 @@ class RenderTodoList extends Component{
             */
             if(e.shiftKey && 37<=e.keyCode && e.keyCode<=40 && this.actionMode === 'selectorMode'){
                 var _pressArrowDirection = e.key;
-                if(_pressArrowDirection === 'ArrowDown' && this.currentSelector!=this.props._contents.length-1){
-                    console.log(this.currentSelector)
-                    this.swapContents('down');
-                }else if(_pressArrowDirection==='ArrowUp' && this.currentSelector !=0){
-                    this.swapContents('up');
+
+                if(this.actionMode==='selectorMode' && this.writeContentMode==='memoList'){
+                    let memolength = this.props._contents[this.currentTodoSelector].memolist.length;
+                    if(_pressArrowDirection === 'ArrowDown' && this.currentMemoSelector!=memolength-1){
+                        this.swapMemoContents('down');
+                    }else if(_pressArrowDirection==='ArrowUp' && this.currentMemoSelector !=0){
+                        this.swapMemoContents('up');
+                    }
+                }else{
+                    if(_pressArrowDirection === 'ArrowDown' && this.currentTodoSelector!=this.props._contents.length-1){
+                        this.swapTodoContents('down');
+                    }else if(_pressArrowDirection==='ArrowUp' && this.currentTodoSelector !=0){
+                        this.swapTodoContents('up');
+                    }
                 }
             }
 
@@ -52,7 +74,11 @@ class RenderTodoList extends Component{
              */
             if(this.actionMode === 'selectorMode' && e.key === '/'){
                 if(this.writeContentMode === 'todoList') this.writeContentMode = 'memoList';
-                else this.writeContentMode = 'todoList';
+                else {
+                    this.writeContentMode = 'todoList';
+                    this.currentMemoSelector = -1;
+                }
+                e.target.value = "";
                 this.forceUpdate();
             }
 
@@ -61,18 +87,33 @@ class RenderTodoList extends Component{
             */
             if(e.shiftKey && e.key === 'Delete'){
                 var _deleteContents = Array.from(this.props._contents)
-                if(this.props._contents.length ===1){
-                    _deleteContents = []
-                    this.currentSelector = this.currentSelector-1;
-                    this.mode = 'writeMode'
-                }
-                else if(this.props._contents.length !==0){
-                    for(var i=this.currentSelector; i<_deleteContents.length-1; i++){
-                        _deleteContents[i] = _deleteContents[i+1];
+                if(this.actionMode==='selectorMode' && this.writeContentMode==='memoList'){
+                    let memolength = _deleteContents[this.currentTodoSelector].memolist.length;
+                    if( memolength!==0){
+                        for(var i = this.currentMemoSelector; i<memo-1; i++){
+                            _deleteContents[this.currentTodoSelector].memolist[i] = 
+                            _deleteContents[this.currentTodoSelector].memolist[i+1]
+                        }
+                        _deleteContents[this.currentTodoSelector].memolist=
+                        _deleteContents[this.currentTodoSelector].memolist.slice(0,memolength-1);
+                        if(this.currentMemoSelector=== memolength-1){
+                            this.currentMemoSelector = this.currentMemoSelector-1;
+                        }
                     }
-                    _deleteContents = _deleteContents.slice(0,_deleteContents.length-1);
-                    if(this.currentSelector === this.props._contents.length-1){
-                        this.currentSelector = this.currentSelector-1;
+                }else{
+                    if(this.props._contents.length ===1){
+                        _deleteContents = []
+                        this.currentTodoSelector = this.currentTodoSelector-1;
+                        this.mode = 'writeMode'
+                    }
+                    else if(this.props._contents.length !==0){
+                        for(var i=this.currentTodoSelector; i<_deleteContents.length-1; i++){
+                            _deleteContents[i] = _deleteContents[i+1];
+                        }
+                        _deleteContents = _deleteContents.slice(0,_deleteContents.length-1);
+                        if(this.currentTodoSelector === this.props._contents.length-1){
+                            this.currentTodoSelector = this.currentTodoSelector-1;
+                        }
                     }
                 }
                 this.props.updateContentsTodoList(_deleteContents);
@@ -83,25 +124,45 @@ class RenderTodoList extends Component{
             */
             if(37<=e.keyCode && e.keyCode<=40){
                 var _pressArrowDirection = e.key;
-                if(_pressArrowDirection === 'ArrowDown'){
-                    if(this.actionMode==='writeMode' && this.props._contents.length!==0){
-                        this.currentSelector = 0;
-                        this.actionMode = 'selectorMode'
-                    }else if(this.actionMode === 'selectorMode'){
-                        this.currentSelector = (this.currentSelector === this.props._contents.length-1)? this.props._contents.length-1 : this.currentSelector+1;                        
+                if(this.actionMode==='selectorMode' && this.writeContentMode==='memoList'){
+                    //controll memo mode
+                    let nowMemolist = this.props._contents[this.currentTodoSelector].memolist;
+                    if(_pressArrowDirection === 'ArrowDown'){
+                        
+                        if(nowMemolist.length !== 0){
+                            this.currentMemoSelector = (nowMemolist.length-1 === this.currentMemoSelector) ? nowMemolist.length-1: this.currentMemoSelector+1;    
+                        }
+                    }else if(_pressArrowDirection === 'ArrowUp'){
+                        if(nowMemolist.length!==0){
+                            this.currentMemoSelector = (this.currentMemoSelector === 0)? 0 : this.currentMemoSelector-1;
+                        }
                     }
-                }else if(_pressArrowDirection === 'ArrowUp'){
-                    if(this.actionMode === 'selectorMode'){
-                        if(this.currentSelector === 0){
-                            this.actionMode ='writeMode'
-                        }else{
-                            this.currentSelector = (this.currentSelector === 0)? 0 : this.currentSelector-1;
+                }else{
+                    //controll todo mode
+                    if(_pressArrowDirection === 'ArrowDown'){
+                        if(this.actionMode==='writeMode' && this.props._contents.length!==0){
+                            this.currentTodoSelector = 0;
+                            this.actionMode = 'selectorMode'
+                        }else if(this.actionMode === 'selectorMode'){
+                            this.currentTodoSelector = (this.currentTodoSelector === this.props._contents.length-1)? this.props._contents.length-1 : this.currentTodoSelector+1;                        
+                        }
+                    }else if(_pressArrowDirection === 'ArrowUp'){
+                        if(this.actionMode === 'selectorMode'){
+                            if(this.currentTodoSelector === 0){
+                                this.actionMode ='writeMode'
+                            }else{
+                                this.currentTodoSelector = (this.currentTodoSelector === 0)? 0 : this.currentTodoSelector-1;
+                            }
                         }
                     }
                 }
-                console.log(this.props._contents);
                 this.forceUpdate();
             }//end arrow if test
+            
+            
+            if(e.metaKey && e.key ==='Enter'){
+                console.log(e);
+            }
             
         })
     }
@@ -113,7 +174,8 @@ class RenderTodoList extends Component{
             <TodoMemoDivRender 
             _contents={this.props._contents}
             _mode = {this.actionMode}
-            _currentSelector = {this.currentSelector}
+            _currentTodoSelector = {this.currentTodoSelector}
+            _currentMemoSelector = {this.currentMemoSelector}
             _writeContentMode = {this.writeContentMode}
             ></TodoMemoDivRender>
             
