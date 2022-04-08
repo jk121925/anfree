@@ -41,7 +41,7 @@ class RenderTodoList extends Component{
 
     componentDidMount() {
         window.addEventListener('keydown',(e)=>{
-            // console.log(e);
+            console.log("RenderTodoList");
             /*
                 위아래로 움직이는 기능 구현
             */
@@ -178,8 +178,6 @@ class RenderTodoList extends Component{
             _currentMemoSelector = {this.currentMemoSelector}
             _writeContentMode = {this.writeContentMode}
             ></TodoMemoDivRender>
-            
-
         )
     }
 }

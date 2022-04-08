@@ -3,7 +3,7 @@ import MemoInput from "./MemoInput";
 import "./TodoElement.css"
 
 function TodoMemoDiv({_contents,_mode,_currentTodoSelector,_writeContentMode,_currentMemoSelector}){
-    console.log("TodoMemoDiv and _currentMemoSelector" ,_currentTodoSelector, _currentMemoSelector);
+    // console.log("TodoMemoDiv and _currentMemoSelector" ,_currentTodoSelector, _currentMemoSelector);
     const [preContents, AfterContents] = useState(_contents);
     var returnList =[]
 
