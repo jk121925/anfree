@@ -1,8 +1,7 @@
 import React, {Component} from "react";
 import RenderTodoList from "./RenderTodoList.js"
 import RenderTodoInput from "./RenderTodoInput.js";
-import StageChangeModal from "./StageChangeModal.js";
-import { toHaveFormValues } from "@testing-library/jest-dom/dist/matchers";
+import Modal from "./Modal.js";
 
 
 
@@ -10,7 +9,6 @@ class Todolist extends Component{
     constructor(props){
       super(props);
       // stage Section : EnterTodo, FilterTodo, EraseTodo
-      this.stage="EnterTodo";
       // this.contentsMaxIdx =0;
       this.state={
         contents :[],
@@ -18,7 +16,6 @@ class Todolist extends Component{
         nextbooleaon :false
       }
     }
-
     componentDidMount(){
       window.addEventListener('keydown',(e)=>{
         if(e.shiftKey && e.key ==='Enter'){
@@ -31,17 +28,32 @@ class Todolist extends Component{
       })
     }
 
+    modalMessage(){
+      let returnstr;
+      if(this.state.stage==="EnterTodo"){
+        returnstr = "Are you sure to go filtering step?";
+      }else if(this.state.stage === "FilterTodo"){
+        returnstr = "Are you sure to go Erasing step?"
+      }
+      return returnstr;
+    }
+
 
     render(){
       // this.nextStange()
+      this.modalMessage();
       return(
         <div>
-          <StageChangeModal
-          _stage={this.state.stage}
+          <Modal
           _nextbooleaon={this.state.nextbooleaon}
-          ></StageChangeModal>
+          _header={this.state.stage}
+          >
+            {this.modalMessage()}
+          </Modal>
+
+
           <RenderTodoInput 
-          _stage = {this.stage}
+          _stage = {this.state.stage}
           _contents = {this.state.contents} 
 
           updateContents={function(updatelist){
@@ -51,7 +63,7 @@ class Todolist extends Component{
           }.bind(this)}></RenderTodoInput>
           <RenderTodoList 
             _contents={this.state.contents}
-            _stage = {this.stage}
+            _stage = {this.state.stage}
 
             updateContentsTodoList={function(updatelist){
               this.setState({

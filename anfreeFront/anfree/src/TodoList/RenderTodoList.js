@@ -41,7 +41,7 @@ class RenderTodoList extends Component{
 
     componentDidMount() {
         window.addEventListener('keydown',(e)=>{
-            console.log("RenderTodoList");
+            // console.log("RenderTodoList");
             /*
                 위아래로 움직이는 기능 구현
             */
