@@ -8,9 +8,6 @@ import Modal from "./Modal.js";
 class Todolist extends Component{
     constructor(props){
       super(props);
-      // stage Section : EnterTodo, FilterTodo, EraseTodo
-      // this.contentsMaxIdx =0;
-      this.stageState = ["EnterTodo","FilterTodo","EraseTodo"]
       this.state={
         contents :[],
         stage : 0,
@@ -25,8 +22,6 @@ class Todolist extends Component{
         returnstr = "Few second after you go to Next step";
       }else if(NextPrev==='Prev'){
         returnstr = "Few second after you go to Previous step"
-      }else if(NextPrev ==='None'){
-        returnstr = "Cannot move Next or Previous step"
       }
       return returnstr;
     }
@@ -50,6 +45,8 @@ class Todolist extends Component{
             NextPrev : 'Prev'
           })
         }
+        this.props.stageChange(this.state.stage);
+
       })
     }
 
@@ -57,14 +54,14 @@ class Todolist extends Component{
 
 
     render(){
-      console.log(this.state.stage);
       return(
         <div>
+          
           <Modal
           _modalState={this.state.modalState}
-          _header={this.stageState[this.state.stage]}
+          _header={this.props._stageState[this.state.stage]}
           
-          closeModal={function(closeState){
+          closeModal={function(){
             this.setState({
               modalState : false
             })
@@ -75,7 +72,7 @@ class Todolist extends Component{
 
 
           <RenderTodoInput 
-          _stage = {this.stageState[this.state.stage]}
+          _stage = {this.props._stageState[this.state.stage]}
           _contents = {this.state.contents} 
 
           updateContents={function(updatelist){
@@ -83,9 +80,10 @@ class Todolist extends Component{
               contents : updatelist,
             })
           }.bind(this)}></RenderTodoInput>
+          
           <RenderTodoList 
             _contents={this.state.contents}
-            _stage = {this.stageState[this.state.stage]}
+            _stage = {this.props._stageState[this.state.stage]}
 
             updateContentsTodoList={function(updatelist){
               this.setState({

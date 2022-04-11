@@ -1,14 +1,9 @@
-.App {
+.App{
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
 
-
-.App-header {
+.App-EnterTodo {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -18,13 +13,58 @@
   font-size: calc(10px + 2vmin);
   color: white;
 
-  /* border: none; */
-  /* filter: brightness(20%); */
+  /* animation: phasing-show 3s;
+  animation-play-state: running; */
   
 }
 
-.App-link {
-  color: #61dafb;
+.App-FilterTodo {
+  background-color: #5b4059;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+
+  animation: phasing-showEtoF 3s;
+}
+
+
+.App-EraseTodo {
+  background-color: #c68888;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+
+  animation: phasing-showFtoE 3s;
+  
+}
+@keyframes phasing-showEtoF {
+  from {
+    opacity: 0;
+    margin-top: 100%;
+  }
+  to {
+    opacity: 1;
+    margin-top: 0%;
+  }
+}
+
+@keyframes phasing-showFtoE {
+  from {
+    opacity: 0;
+    margin-top: 100%;
+  }
+  to {
+    opacity: 1;
+    margin-top: 0%;
+  }
 }
 
 

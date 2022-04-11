@@ -5,7 +5,7 @@ const Modal = (props) => {
     
     useEffect(()=>{
         if(_modalState){
-            let timmer = setTimeout(()=>{closeModal(false)},2000);
+            let timmer = setTimeout(()=>{closeModal(false)},2900);
         }
     },[_header])
 
