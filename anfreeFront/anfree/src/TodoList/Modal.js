@@ -1,27 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Modal.css"
 const Modal = (props) => {  
-    const {_nextbooleaon,_header} = props;
-    // console.log(_stage);
+    const {_modalState,_header, closeModal} = props;
+    
+    useEffect(()=>{
+        if(_modalState){
+            let timmer = setTimeout(()=>{closeModal(false)},2000);
+        }
+    },[_header])
+
+
+
     return (
       // 모달이 열릴때 openModal 클래스가 생성된다.
-      <div className={ _nextbooleaon ? 'openModal modal' : 'modal'}>
-        {_nextbooleaon ? (
+      <div className={ _modalState ? 'openModal modal' : 'modal'}>
+        {_modalState ? (
           <section>
             <header>
               {_header}
-              <button className="close">
+              <button onClick={closeModal} className="close">
                 &times;
               </button>
             </header>
             <main>{props.children}</main>
             <footer>
-              <button className="close">
-                close
-              </button>
-              <button className="go_next">
-                  go next!
-              </button>
+                <button className={_modalState ? 'next' : 'prev'} onClick={closeModal}>
+                    {_modalState ?
+                    (
+                        <div>next</div>
+                    ) : (
+                        <div>prev</div>
+                    )}
+
+                </button>
             </footer>
           </section>
         ) : null}

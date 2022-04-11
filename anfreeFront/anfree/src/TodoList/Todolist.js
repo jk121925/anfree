@@ -10,50 +10,72 @@ class Todolist extends Component{
       super(props);
       // stage Section : EnterTodo, FilterTodo, EraseTodo
       // this.contentsMaxIdx =0;
+      this.stageState = ["EnterTodo","FilterTodo","EraseTodo"]
       this.state={
         contents :[],
-        stage : "EnterTodo",
-        nextbooleaon :false
+        stage : 0,
+        modalState : false,
+        NextPrev : 'Next'
       }
     }
-    componentDidMount(){
-      window.addEventListener('keydown',(e)=>{
-        if(e.shiftKey && e.key ==='Enter'){
-          this.setState({
-            stage : "FilterTodo",
-            nextbooleaon : !this.state.nextbooleaon
 
-          })
-        }
-      })
-    }
-
-    modalMessage(){
+    modalMessage(NextPrev){
       let returnstr;
-      if(this.state.stage==="EnterTodo"){
-        returnstr = "Are you sure to go filtering step?";
-      }else if(this.state.stage === "FilterTodo"){
-        returnstr = "Are you sure to go Erasing step?"
+      if(NextPrev==='Next'){
+        returnstr = "Few second after you go to Next step";
+      }else if(NextPrev==='Prev'){
+        returnstr = "Few second after you go to Previous step"
+      }else if(NextPrev ==='None'){
+        returnstr = "Cannot move Next or Previous step"
       }
       return returnstr;
     }
 
 
+
+    componentDidMount(){
+      window.addEventListener('keydown',(e)=>{
+        // console.log(e);
+        if(e.shiftKey && e.key ==='Enter' && this.state.stage!==2){
+          this.setState({
+            stage : this.state.stage+1,
+            modalState : !this.state.modalState,
+            NextPrev : 'Next'
+          })
+        }
+        else if(e.shiftKey && e.key === 'Backspace' && this.state.stage!==0){
+          this.setState({
+            stage : this.state.stage-1,
+            modalState : !this.state.modalState,
+            NextPrev : 'Prev'
+          })
+        }
+      })
+    }
+
+    
+
+
     render(){
-      // this.nextStange()
-      this.modalMessage();
+      console.log(this.state.stage);
       return(
         <div>
           <Modal
-          _nextbooleaon={this.state.nextbooleaon}
-          _header={this.state.stage}
+          _modalState={this.state.modalState}
+          _header={this.stageState[this.state.stage]}
+          
+          closeModal={function(closeState){
+            this.setState({
+              modalState : false
+            })
+          }.bind(this)}
           >
-            {this.modalMessage()}
+            {this.modalMessage(this.state.NextPrev)}
           </Modal>
 
 
           <RenderTodoInput 
-          _stage = {this.state.stage}
+          _stage = {this.stageState[this.state.stage]}
           _contents = {this.state.contents} 
 
           updateContents={function(updatelist){
@@ -63,7 +85,7 @@ class Todolist extends Component{
           }.bind(this)}></RenderTodoInput>
           <RenderTodoList 
             _contents={this.state.contents}
-            _stage = {this.state.stage}
+            _stage = {this.stageState[this.state.stage]}
 
             updateContentsTodoList={function(updatelist){
               this.setState({
