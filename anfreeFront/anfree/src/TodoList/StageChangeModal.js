@@ -11,4 +11,4 @@ export default function StageChangeModal({_stage,_nextbooleaon}){
             {ModalDiv}
         </div>
     )
-}
+} 
