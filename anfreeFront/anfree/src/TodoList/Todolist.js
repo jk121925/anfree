@@ -71,15 +71,17 @@ class Todolist extends Component{
           </Modal>
 
 
-          <RenderTodoInput 
-          _stage = {this.props._stageState[this.state.stage]}
-          _contents = {this.state.contents} 
-
-          updateContents={function(updatelist){
-            this.setState({
-              contents : updatelist,
-            })
-          }.bind(this)}></RenderTodoInput>
+          {this.state.stage === 0 ? (
+            <RenderTodoInput 
+            _stage = {this.props._stageState[this.state.stage]}
+            _contents = {this.state.contents} 
+  
+            updateContents={function(updatelist){
+              this.setState({
+                contents : updatelist,
+              })
+            }.bind(this)}></RenderTodoInput>
+          ):null}
           
           <RenderTodoList 
             _contents={this.state.contents}

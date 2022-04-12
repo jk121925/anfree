@@ -3,11 +3,11 @@ import "./Modal.css"
 const Modal = (props) => {  
     const {_modalState,_header, closeModal} = props;
     
-    useEffect(()=>{
-        if(_modalState){
-            let timmer = setTimeout(()=>{closeModal(false)},2900);
-        }
-    },[_header])
+    // useEffect(()=>{
+    //     if(_modalState){
+    //         let timmer = setTimeout(()=>{closeModal(false)});
+    //     }
+    // },[_header])
 
 
 
