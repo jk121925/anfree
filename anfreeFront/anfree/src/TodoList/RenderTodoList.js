@@ -1,8 +1,8 @@
 import { render } from "@testing-library/react";
 import React, {Component, memo} from "react";
 import TodoMemoDivEnter from "./TodoMemoDivEnter";
-import "./TodoElement.css"
 import TodoMemoDivFilter from "./TodoMemoDiveFilter";
+import "./TodoElementRender.css"
 
 // mode, contents
 class RenderTodoList extends Component{
@@ -42,7 +42,7 @@ class RenderTodoList extends Component{
 
     componentDidMount() {
         window.addEventListener('keydown',(e)=>{
-            console.log(this.props._stage);
+            console.log(1);
             /*
                 위아래로 움직이는 기능 구현
             */
@@ -163,9 +163,40 @@ class RenderTodoList extends Component{
                 
                 
                 if(e.metaKey && e.key ==='Enter'){
-                    console.log(e);
                 }
             }else if(this.props._stage === 'FilterTodo'){
+                if(e.shiftKey && 37<=e.keyCode && e.keyCode<=40 && this.actionMode === 'selectorMode'){
+                    var _pressArrowDirection = e.key;
+    
+                    if(this.actionMode==='selectorMode' && this.writeContentMode==='memoList'){
+                        let memolength = this.props._contents[this.currentTodoSelector].memolist.length;
+                        if(_pressArrowDirection === 'ArrowDown' && this.currentMemoSelector!=memolength-1){
+                            this.swapMemoContents('down');
+                        }else if(_pressArrowDirection==='ArrowUp' && this.currentMemoSelector !=0){
+                            this.swapMemoContents('up');
+                        }
+                    }else{
+                        if(_pressArrowDirection === 'ArrowDown' && this.currentTodoSelector!=this.props._contents.length-1){
+                            this.swapTodoContents('down');
+                        }else if(_pressArrowDirection==='ArrowUp' && this.currentTodoSelector !=0){
+                            this.swapTodoContents('up');
+                        }
+                    }
+
+                    if(_pressArrowDirection === 'ArrowLeft'){
+                        let _contentsUpdate = Array.from(this.props._contents);
+                        _contentsUpdate[this.currentTodoSelector].todoState = "NotWillDo";
+                        this.props.updateContentsTodoList(_contentsUpdate);
+                    }else if(_pressArrowDirection === 'ArrowRight'){
+                        let _contentsUpdate = Array.from(this.props._contents);
+                        _contentsUpdate[this.currentTodoSelector].todoState = "WillDo";
+                        this.props.updateContentsTodoList(_contentsUpdate);    
+                    }
+                    console.log(this.props._contents);
+
+
+
+                }
                 if(37<=e.keyCode && e.keyCode<=40){
                     var _pressArrowDirection = e.key;
                     if(this.actionMode==='selectorMode' && this.writeContentMode==='memoList'){
@@ -192,11 +223,7 @@ class RenderTodoList extends Component{
                             }
                         }else if(_pressArrowDirection === 'ArrowUp'){
                             if(this.actionMode === 'selectorMode'){
-                                if(this.currentTodoSelector === 0){
-                                    this.actionMode ='writeMode'
-                                }else{
-                                    this.currentTodoSelector = (this.currentTodoSelector === 0)? 0 : this.currentTodoSelector-1;
-                                }
+                                this.currentTodoSelector = (this.currentTodoSelector === 0)? 0 : this.currentTodoSelector-1;
                             }
                         }
                     }
@@ -225,13 +252,35 @@ class RenderTodoList extends Component{
                     ) : (
                         (this.props._stage==='FilterTodo') ? 
                     (
-                        <TodoMemoDivFilter
-                        _contents={this.props._contents}
-                        _mode = {this.actionMode}
-                        _currentTodoSelector = {this.currentTodoSelector}
-                        _currentMemoSelector = {this.currentMemoSelector}
-                        _writeContentMode = {this.writeContentMode}
-                        ></TodoMemoDivFilter>
+                        <div className="todoMemoDiv">
+                            <div className="NotWillDo">
+                            <TodoMemoDivFilter
+                            _contents={this.props._contents}
+                            _mode = {this.actionMode}
+                            _currentTodoSelector = {this.currentTodoSelector}
+                            _currentMemoSelector = {this.currentMemoSelector}
+                            _writeContentMode = {this.writeContentMode}
+                            ></TodoMemoDivFilter>
+                            </div>
+                            <div className="ready">
+                            <TodoMemoDivFilter
+                            _contents={this.props._contents}
+                            _mode = {this.actionMode}
+                            _currentTodoSelector = {this.currentTodoSelector}
+                            _currentMemoSelector = {this.currentMemoSelector}
+                            _writeContentMode = {this.writeContentMode}
+                            ></TodoMemoDivFilter>
+                            </div>
+                            <div className="WillDo">
+                            <TodoMemoDivFilter
+                            _contents={this.props._contents}
+                            _mode = {this.actionMode}
+                            _currentTodoSelector = {this.currentTodoSelector}
+                            _currentMemoSelector = {this.currentMemoSelector}
+                            _writeContentMode = {this.writeContentMode}
+                            ></TodoMemoDivFilter>
+                            </div>
+                        </div>
                     ):(
                         <TodoMemoDivEnter  
                         _contents={this.props._contents}

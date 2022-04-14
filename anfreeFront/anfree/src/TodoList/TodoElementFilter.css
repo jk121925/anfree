@@ -1,0 +1,68 @@
+.todoMainElement{
+    width: 200px;
+    margin: 5px 5px;
+    color : rgb(255, 255, 255);
+
+    text-align: left;
+    text-indent: 10px;
+    
+    
+}
+
+.todoMainElement-now{
+    text-align: left;
+    text-indent: 10px;
+    
+    margin: 5px 5px;
+    padding: 5px 5px 10px 5px;
+    border-radius: 20px;
+    border: 2px solid white;
+    color : rgb(178, 58, 58);
+    background-color: transparent;
+}
+
+.memoInput{
+    font-size: large;
+    text-indent: 20px;
+    color :white;
+    background-color: None;
+}
+
+.memoElement{
+    font-size:  large;
+    text-indent: 30px;
+    color :white;
+    background-color: None;
+}
+
+.memoElement-now{
+    text-indent: 30px;
+    color :rgb(143, 166, 25);
+    background-color: None;
+}
+
+.todoMemoInput{
+    margin: 15px;
+    width: 300px;
+    height: 32px;
+    text-align: center;
+    font-size: 15px;
+    border: 0;
+    border-radius: 15px;
+    outline: none;
+    padding-left: 10px;
+    background-color: rgb(233, 233, 233);
+}
+
+.todoMemoInput-memo{
+    width: 300px;
+    height: 32px;
+    text-align: center;
+    font-size: 15px;
+    border: 0;
+    border-radius: 15px;
+    outline: none;
+    padding-left: 10px;
+    background-color: rgb(233, 233, 233);
+    /* filter :blur(10px); */
+}

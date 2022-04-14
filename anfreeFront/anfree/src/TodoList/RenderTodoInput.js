@@ -11,7 +11,7 @@ class RenderTodoInput extends Component{
                     if(e.nativeEvent.key === 'Enter'){
                         e.preventDefault();
                         var addContents = Array.from(this.props._contents);
-                        var addTodoElement = {todoState : false, eraseState : false, todolist : e.target.value, memolist : []}
+                        var addTodoElement = {todoState : "ready", eraseState : false, todolist : e.target.value, memolist : []}
                         addContents.push(addTodoElement)
                         this.props.updateContents(addContents);
                         e.target.value = "";

@@ -1,6 +1,6 @@
 import React ,{useState}from "react";
 import MemoInput from "./MemoInput";
-import "./TodoElement.css"
+import "./TodoElementEnter.css"
 
 function TodoMemoDivEnter({_contents,_mode,_currentTodoSelector,_writeContentMode,_currentMemoSelector}){
     // console.log("TodoMemoDiv and _currentMemoSelector" ,_currentTodoSelector, _currentMemoSelector);
@@ -76,49 +76,4 @@ function TodoMemoDivEnter({_contents,_mode,_currentTodoSelector,_writeContentMod
     );
 };
 
-export default TodoMemoDivEnter;
-
-
-
-
-
-    // refactorying waiting
-    // _className : todoListClassName
-    // _renderContainerElement : todolist where index i
-    // _inputMemoCheck : true or false
-    // _modeSelectCheck : true or false
-    // const makeTodoDivList =(_todoListClassName, _renderContainerElement,_inputMemoCheck,_modeSelectCheck)=>{
-    //     if(_modeSelectCheck){
-    //         if(_inputMemoCheck){
-    //             return(
-    //                 <div className={_todoListClassName} key={_renderContainerElement.todolist}>
-    //                     {_renderContainerElement.todolist}
-    
-    //                     <div className="memoInput" key={_renderContainerElement.todolist +"mempInputs"}>
-    //                         <MemoInput
-    //                             _memoContents = {renderContainer}
-    //                             _memoIdx = {_currentTodoSelector}
-    //                             _setterContents = {setAfterContents}
-    //                         ></MemoInput> 
-    //                     </div>
-    //                     {makeMemoDivList(_renderContainerElement.memolist)}
-    //                 </div>
-    //             )
-    //         }else{
-    //             return(
-    //                 <div className={_todoListClassName} key={_renderContainerElement.todolist}>
-    //                     {_renderContainerElement.todolist}
-    //                     {makeMemoDivList(_renderContainerElement.memolist)}
-    //                 </div>
-    //             )
-    //         }
-    //     }else{
-    //         return(
-    //             <div className={_todoListClassName} key={_renderContainerElement.todolist}>
-    //                 {_renderContainerElement.todolist}
-    //                 {makeMemoDivList(_renderContainerElement.memolist)}
-    //             </div>
-    //         )
-    //     }
-        
-    // }
+export default TodoMemoDivEnter; 

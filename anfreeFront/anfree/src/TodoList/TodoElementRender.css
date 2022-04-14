@@ -1,0 +1,9 @@
+.todoMemoDiv{
+    display: flex;
+    flex-direction: row;
+}
+
+.NotWillDo{
+    flex-direction: column-reverse;
+
+}

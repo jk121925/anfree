@@ -1,6 +1,6 @@
 import React ,{useState}from "react";
 import MemoInput from "./MemoInput";
-import "./TodoElement.css"
+import "./TodoElementFilter.css"
 
 function TodoMemoDivFilter({_contents,_mode,_currentTodoSelector,_writeContentMode,_currentMemoSelector}){
     // console.log("TodoMemoDiv and _currentMemoSelector" ,_currentTodoSelector, _currentMemoSelector);
@@ -27,28 +27,13 @@ function TodoMemoDivFilter({_contents,_mode,_currentTodoSelector,_writeContentMo
     if(_mode === 'selectorMode'){
         while(i<renderContainer.length){
             if(_currentTodoSelector!==-1 && i===_currentTodoSelector){
-                if(_writeContentMode ==='memoList'){
-                    returnList.push(
-                        <div className="todoMainElement-now" key={renderContainer[i].todolist}>
-                            {renderContainer[i].todolist}
-                            <div className="MemoInput" key={renderContainer[i].todolist +"mempInputs"}>
-                                <MemoInput
-                                    _memoContents = {renderContainer}
-                                    _memoIdx = {_currentTodoSelector}
-                                    _setterContents = {setAfterContents}
-                                ></MemoInput> 
-                            </div>
-                            {makeMemoDivList(renderContainer[i].memolist,_currentMemoSelector)}
-                        </div>
-                    );
-                }else{
+                
                     returnList.push(
                         <div className="todoMainElement-now" key={renderContainer[i].todolist}>
                             {renderContainer[i].todolist}
                             {makeMemoDivList(renderContainer[i].memolist,-1)}
                         </div>
                     );
-                }
             }else{
                 returnList.push(
                     <div className="todoMainElement" key={renderContainer[i].todolist}>
