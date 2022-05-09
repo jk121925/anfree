@@ -11,7 +11,7 @@ class ControllerTodoInput extends Component{
                         e.preventDefault();
                         var addContents = Array.from(this.props._contents);
                         var addTodoElement = {todoState : "ready", eraseState : false, todolist : e.target.value, memolist : []}
-                        addContents.push(addTodoElement)
+                        addContents[1].push(addTodoElement)
                         this.props.updateContents(addContents);
                         e.target.value = "";
                     }

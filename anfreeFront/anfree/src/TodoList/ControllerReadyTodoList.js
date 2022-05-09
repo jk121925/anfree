@@ -14,55 +14,107 @@ class RenderTodoList extends Component{
         // TodoList controll selector
         this.currentTodoSelector = -1;
         this.currentMemoSelector = -1;
+        this.currentListIndex = 1;
         // filterTodo cursor
         this.state={
-            pressShiftCnt :0,
             pressArrowDirection : ''
         }
     }
     
-    swapTodoContents(UpDown){
+    /*
+    TodoList 위아리 바꾸기
+    UpDonw : 위인지 아래인지
+    targetList : 지우고자 하는 list => 0,1,2
+    currentTodoSelector : 현재 선택된 번호 => 몇번째가 선택 되었는지
+    updateFunction : 함수에서 callback 하는 구조 => property에서 받아온 값
+    propsContents : property로 부터 받아온 [[],[],[]] 리스트 전체
+    */
+    swapTodoContents(UpDown,targetList,currentSelector,updateFunction,propsContents){
+        console.log(updateFunction);
         var upDownInt = (UpDown === 'up')? -1 :1;
-        var updateContentsList = Array.from(this.props._contents);
-        var temp = updateContentsList[this.currentTodoSelector];
-        updateContentsList[this.currentTodoSelector] = updateContentsList[this.currentTodoSelector+upDownInt];
-        updateContentsList[this.currentTodoSelector+upDownInt] = temp;
-        this.props.updateContentsTodoList(updateContentsList);
+        var updateContentsList = Array.from(propsContents);
+        var temp = updateContentsList[targetList][currentSelector];
+        updateContentsList[targetList][currentSelector] = updateContentsList[targetList][currentSelector+upDownInt];
+        updateContentsList[targetList][currentSelector+upDownInt] = temp;
+        updateFunction(updateContentsList);
     }
 
-    swapMemoContents(UpDown){
-        let memoIdx = this.currentMemoSelector;
-        let todoIdx = this.currentTodoSelector;
+    /*
+    Memo 위아래 바꾸기
+    UpDonw : 위인지 아래인지
+    targetList : 지우고자 하는 list => 0,1,2
+    currentTodoSelector : 현재 선택된 번호 => 몇번째가 선택 되었는지
+    currentMemoSelector : 현재 선택된 메모 번호
+    updateFunction : 함수에서 callback 하는 구조 => property에서 받아온 값
+    propsContents : property로 부터 받아온 [[],[],[]] 리스트 전체
+    */
+    swapMemoContents(UpDown,targetList,currentTodoSelector,currentMemoSelector,updateFunction,propsContents){
+        let memoIdx = currentMemoSelector;
+        let todoIdx = currentTodoSelector;
         var upDownInt = (UpDown === 'up')? -1 :1;
-        var updateContentsList = Array.from(this.props._contents);
-        var temp = updateContentsList[todoIdx].memolist[memoIdx];
-        updateContentsList[todoIdx].memolist[memoIdx] = updateContentsList[todoIdx].memolist[memoIdx + upDownInt];
-        updateContentsList[todoIdx].memolist[memoIdx+upDownInt] = temp;
-        this.props.updateContentsTodoList(updateContentsList);
+        var updateContentsList = Array.from(propsContents);
+        var temp = updateContentsList[targetList][todoIdx].memolist[memoIdx];
+        updateContentsList[targetList][todoIdx].memolist[memoIdx] = updateContentsList[targetList][todoIdx].memolist[memoIdx + upDownInt];
+        updateContentsList[targetList][todoIdx].memolist[memoIdx+upDownInt] = temp;
+        updateFunction(updateContentsList);
+    }
+
+    /*
+    MemoList 삭제
+    targetList : 지우고자 하는 list => 0,1,2
+    currentTodoSelector : 현재 선택된 번호 => 몇번째가 선택 되었는지
+    currentMemoSelector : 현재 선택된 메모 번호
+    propsContents : property로 부터 받아온 [[],[],[]] 리스트 전체
+    */
+    deleteMemoContents(targetList,currentTodoSelector,currentMemoSelector,propsContents){
+        let memolength = propsContents[targetList][currentTodoSelector].memolist.length;
+        for(var i = currentMemoSelector; i<propsContents[targetList][currentTodoSelector].length-1; i++){
+            propsContents[targetList][currentTodoSelector].memolist[i] = 
+            propsContents[targetList][currentTodoSelector].memolist[i+1]
+        }
+        propsContents[targetList][currentTodoSelector].memolist=
+        propsContents[targetList][currentTodoSelector].memolist.slice(0,memolength-1);
+        return propsContents;
+    }
+
+    // 함수에는 해당되는 기능만을 집중해서 구현하자 -> 함수는 필요한 것만!
+    /*
+    TodoList 삭제
+    targetList : 지우고자 하는 list => 0,1,2
+    currentTodoSelector : 현재 선택된 번호 => 몇번째가 선택 되었는지
+    propsContents : property로 부터 받아온 [[],[],[]] 리스트 전체
+    */
+    deleteTodoContents(targetList,currentTodoSelector,propsContents){
+        for(var i=currentTodoSelector; i<propsContents[targetList].length-1; i++){
+            propsContents[targetList][i] = propsContents[targetList][i+1];
+        }
+        propsContents = propsContents[targetList].slice(0,propsContents.length-1);
+        return propsContents;
     }
 
     componentDidMount() {
         window.addEventListener('keydown',(e)=>{
             // console.log("RenderTodoList action Mode " , this.actionMode , "writeContent Mode ", this.writeContentMode);
             /*
-                위아래로 움직이는 기능 구현
+                위아래로 swap하는 기능 구현
             */
             if(this.props._stage === 'EnterTodo'){
+
                 if(e.shiftKey && 37<=e.keyCode && e.keyCode<=40 && this.actionMode === 'selectorMode'){
                     var _pressArrowDirection = e.key;
     
                     if(this.actionMode==='selectorMode' && this.writeContentMode==='memoList'){
-                        let memolength = this.props._contents[this.currentTodoSelector].memolist.length;
+                        let memolength = this.props._contents[1][this.currentTodoSelector].memolist.length;
                         if(_pressArrowDirection === 'ArrowDown' && this.currentMemoSelector!=memolength-1){
-                            this.swapMemoContents('down');
+                            this.swapMemoContents('down',1,this.currentTodoSelector,this.currentMemoSelector,this.props.updateContentsTodoList,this.props._contents);
                         }else if(_pressArrowDirection==='ArrowUp' && this.currentMemoSelector !=0){
-                            this.swapMemoContents('up');
+                            this.swapMemoContents('up',1,this.currentTodoSelector,this.currentMemoSelector,this.props.updateContentsTodoList,this.props._contents);
                         }
                     }else{
-                        if(_pressArrowDirection === 'ArrowDown' && this.currentTodoSelector!=this.props._contents.length-1){
-                            this.swapTodoContents('down');
+                        if(_pressArrowDirection === 'ArrowDown' && this.currentTodoSelector!=this.props._contents[1].length-1){
+                            this.swapTodoContents('down',1,this.currentTodoSelector,this.props.updateContentsTodoList,this.props._contents);
                         }else if(_pressArrowDirection==='ArrowUp' && this.currentTodoSelector !=0){
-                            this.swapTodoContents('up');
+                            this.swapTodoContents('up',1,this.currentTodoSelector,this.props.updateContentsTodoList,this.props._contents);
                         }
                     }
                 }
@@ -91,30 +143,21 @@ class RenderTodoList extends Component{
                 if(e.shiftKey && e.key === 'Delete'){
                     var _deleteContents = Array.from(this.props._contents)
                     if(this.actionMode==='selectorMode' && this.writeContentMode==='memoList'){
-                        let memolength = _deleteContents[this.currentTodoSelector].memolist.length;
-                        if( memolength!==0){
-                            for(var i = this.currentMemoSelector; i<memo-1; i++){
-                                _deleteContents[this.currentTodoSelector].memolist[i] = 
-                                _deleteContents[this.currentTodoSelector].memolist[i+1]
-                            }
-                            _deleteContents[this.currentTodoSelector].memolist=
-                            _deleteContents[this.currentTodoSelector].memolist.slice(0,memolength-1);
-                            if(this.currentMemoSelector=== memolength-1){
+                        if(_deleteContents[1][this.currentTodoSelector].memolist.lengt!==0){
+                            _deleteContents = this.deleteMemoContents(1,this.currentTodoSelector,this.currentMemoSelector,_deleteContents);
+                            if(this.currentMemoSelector=== _deleteContents[1][this.currentTodoSelector].memolist.lengt-1){
                                 this.currentMemoSelector = this.currentMemoSelector-1;
                             }
                         }
                     }else{
-                        if(this.props._contents.length ===1){
-                            _deleteContents = []
+                        if(_deleteContents.length ===1){
+                            _deleteContents[1] = []
                             this.currentTodoSelector = this.currentTodoSelector-1;
                             this.mode = 'writeMode'
                         }
-                        else if(this.props._contents.length !==0){
-                            for(var i=this.currentTodoSelector; i<_deleteContents.length-1; i++){
-                                _deleteContents[i] = _deleteContents[i+1];
-                            }
-                            _deleteContents = _deleteContents.slice(0,_deleteContents.length-1);
-                            if(this.currentTodoSelector === this.props._contents.length-1){
+                        else if(_deleteContents.length !==0){
+                            _deleteContents = this.deleteTodoContents(1,this.currentTodoSelector,_deleteContents);
+                            if(this.currentTodoSelector === _deleteContents[1].length-1){
                                 this.currentTodoSelector = this.currentTodoSelector-1;
                             }
                         }
@@ -123,13 +166,14 @@ class RenderTodoList extends Component{
                 }
                 /*
                     writeMode vs selectorMode 
-                    selectorMode면 움직이고 있는 중입니다.
+                    위아래로 커서 변경하는 상황
+                    ************************* need refactorying **********************
                 */
                 if(37<=e.keyCode && e.keyCode<=40){
                     var _pressArrowDirection = e.key;
                     if(this.actionMode==='selectorMode' && this.writeContentMode==='memoList'){
                         //controll memo mode
-                        let nowMemolist = this.props._contents[this.currentTodoSelector].memolist;
+                        let nowMemolist = this.props._contents[1][this.currentTodoSelector].memolist;
                         if(_pressArrowDirection === 'ArrowDown'){
                             
                             if(nowMemolist.length !== 0){
@@ -143,11 +187,11 @@ class RenderTodoList extends Component{
                     }else{
                         //controll todo mode
                         if(_pressArrowDirection === 'ArrowDown'){
-                            if(this.actionMode==='writeMode' && this.props._contents.length!==0){
+                            if(this.actionMode==='writeMode' && this.props._contents[1].length!==0){
                                 this.currentTodoSelector = 0;
                                 this.actionMode = 'selectorMode'
                             }else if(this.actionMode === 'selectorMode'){
-                                this.currentTodoSelector = (this.currentTodoSelector === this.props._contents.length-1)? this.props._contents.length-1 : this.currentTodoSelector+1;                        
+                                this.currentTodoSelector = (this.currentTodoSelector === this.props._contents[1].length-1)? this.props._contents[1].length-1 : this.currentTodoSelector+1;                        
                             }
                         }else if(_pressArrowDirection === 'ArrowUp'){
                             if(this.actionMode === 'selectorMode'){
@@ -161,13 +205,6 @@ class RenderTodoList extends Component{
                     }
                     this.forceUpdate();
                 }//end arrow if test
-                /**
-                 * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                 * Second stage -> filterTodo 일 때  동작하는 로직
-                 * RenderTodoList가 복잡해 지지만 한곳에서 관리하는게 더 나을 수 있다는 생각을 해봅니다.
-                 * 후에 따로 빼서 관리하는 방법이 필요 할 수 있습니다.
-                 * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                 */
             }
         })
     }
@@ -178,52 +215,13 @@ class RenderTodoList extends Component{
         return(
             <div className='EnterTodo'>
                 <RenderTodoMemoDivEnter
-                        _contents={this.props._contents}
+                        _contents={this.props._contents[1]}
                         _mode = {this.actionMode}
                         _currentTodoSelector = {this.currentTodoSelector}
                         _currentMemoSelector = {this.currentMemoSelector}
                         _writeContentMode = {this.writeContentMode}
                         ></RenderTodoMemoDivEnter>
             </div>
-           
-        //    <div className={(this.props._stage==='EnterTodo') ? 'EnterTodo': ((this.props._stage === 'FilterTodo') ? "FilterTodo" : "EraseTodo") }>
-        //         {
-        //             (this.props._stage === 'EnterTodo') ? (
-        //                 <RenderTodoMemoDivEnter
-        //                 _contents={this.props._contents}
-        //                 _mode = {this.actionMode}
-        //                 _currentTodoSelector = {this.currentTodoSelector}
-        //                 _currentMemoSelector = {this.currentMemoSelector}
-        //                 _writeContentMode = {this.writeContentMode}
-        //                 ></RenderTodoMemoDivEnter>
-        //             ) : (
-        //                 (this.props._stage==='FilterTodo') ? 
-        //             (
-        //                 <div className="todoMemoDiv">
-        //                     <div className="FilterTodoContainer">
-        //                     <RenderTodoMemoDiveFilter
-        //                     _contents={this.props._contents}
-        //                     _mode = {this.actionMode}
-        //                     _currentTodoSelector = {this.currentTodoSelector}
-        //                     _currentMemoSelector = {this.currentMemoSelector}
-        //                     _writeContentMode = {this.writeContentMode}
-        //                     _filterTodoCursorListCnt = {this.filterTodoCursorListCnt}
-        //                     _filterTodoInnerCursor = {this.filterTodoInnerCursor}
-        //                     ></RenderTodoMemoDiveFilter>
-        //                     </div>
-        //                 </div>
-        //             ):(
-        //                 <RenderTodoMemoDivEnter  
-        //                 _contents={this.props._contents}
-        //                 _mode = {this.actionMode}
-        //                 _currentTodoSelector = {this.currentTodoSelector}
-        //                 _currentMemoSelector = {this.currentMemoSelector}
-        //                 _writeContentMode = {this.writeContentMode}
-        //                 ></RenderTodoMemoDivEnter>
-        //                 )
-        //             ) 
-        //         }
-        //     </div>
         )
     }
 }

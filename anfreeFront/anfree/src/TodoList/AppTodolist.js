@@ -11,7 +11,7 @@ class AppTodolist extends Component{
       super(props);
       
       this.state={
-        contents :[],
+        contents :[[],[],[]],
         stage : 0,
         modalState : false,
         NextPrev : 'Next',
