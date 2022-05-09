@@ -3,11 +3,7 @@ import "./Modal.css"
 const Modal = (props) => {  
     const {_modalState,_header, closeModal} = props;
     
-    // useEffect(()=>{
-    //     if(_modalState){
-    //         let timmer = setTimeout(()=>{closeModal(false)});
-    //     }
-    // },[_header])
+    
 
 
 
@@ -40,36 +36,5 @@ const Modal = (props) => {
     );
   };
 
-
-
-// function Modal(props) {
-//     const { message } = props;
-//     return (
-//       <div
-//         style={{
-//           display: "flex",
-//           justifyContent: "center",
-//           alignItems: "center",
-//           position: "initial",
-//           bottom: 30,
-//           left: 0,
-//           width: 1000,
-//           height: 50,
-//         }}
-//       >
-//         <div
-//           style={{
-//             width: "30%",
-//             textAlign: "center",
-//             borderRadius: 30,
-//             background: "grey",
-//             fontSize: 20,
-//           }}
-//         >
-//           <p>{message}</p>
-//         </div>
-//       </div>
-//     );
-//   }
   
   export default Modal;

@@ -1,8 +1,8 @@
 import React, {Component, useState} from 'react';
 import './App.css';
-import ClockCheckNow from './TodoList/ClockCheckNow.js';
-import Todolist from './TodoList/Todolist.js'
-import Welcome from './TodoList/Welcome.js'
+import AppClockCheckNow from './TodoList/AppClockCheckNow.js';
+import AppTodolist from './TodoList/AppTodolist.js'
+import AppWelcome from './TodoList/AppWelcome.js'
 
 class History_nav extends Component{
   
@@ -47,17 +47,17 @@ function App() {
 
 
 
-  console.log(prevStage);
+  // console.log(prevStage);
   return (
     <div className='App'>
       <header className={setStageAppClassName(prevStage)}>
         <History_nav></History_nav>
-        <Welcome ></Welcome>
-        <ClockCheckNow></ClockCheckNow>
-        <Todolist
+        <AppWelcome ></AppWelcome>
+        <AppClockCheckNow></AppClockCheckNow>
+        <AppTodolist
           _stageState = {stageState}
           stageChange = {stageChange}
-        ></Todolist>
+        ></AppTodolist>
       </header>
     </div>
   );
