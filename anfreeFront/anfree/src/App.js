@@ -27,8 +27,6 @@ class History_nav extends Component{
 function App() {
   const stageState = ["EnterTodo","FilterTodo","EraseTodo"];
   const [prevStage,nextStage] = useState(0);
-  
-  
   const stageChange =(stageNum)=>{
     nextStage(stageNum);
   }
@@ -48,7 +46,9 @@ function App() {
 
 
   // console.log(prevStage);
+  console.log("app js", stageState[prevStage]);
   return (
+    
     <div className='App'>
       <header className={setStageAppClassName(prevStage)}>
         <History_nav></History_nav>

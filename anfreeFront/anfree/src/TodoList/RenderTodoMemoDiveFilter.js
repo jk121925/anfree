@@ -2,10 +2,11 @@ import React ,{useState}from "react";
 import RenderMemoInput from "./RenderMemoInput";
 import "./RenderTodoElementFilter.css"
 
-function RenderTodoMemoDiveFilter({_mode,_currentTodoSelector,_currentMemoSelector,_filterTodoCursorListCnt,_filterTodoCursorList}){
+function RenderTodoMemoDiveFilter({_currentTodoSelector,_currentMemoSelector,_filterTodoCursorListCnt,_filterTodoCursorList}){
+    console.log("rednerTodoMemoDivFilter : render");
     // const [preContents, AfterContents] = useState(_contents);
     let filteredList =[];
-    console.log(_currentTodoSelector,_filterTodoCursorListCnt);
+    // console.log(_filterTodoCursorList);
     // const setAfterContents =(update)=>{
     //     AfterContents(update);
     // }
@@ -19,17 +20,17 @@ function RenderTodoMemoDiveFilter({_mode,_currentTodoSelector,_currentMemoSelect
             ))
         )
     }
-    // __i => 0 - willNotDoList,1 - readyList ,2 - willDoList
-    const makeFilterdTodoDivList =(__i,__filteredList,__filterTodoCursorListCnt,__currentTodoSelector,__currentMemoSelector)=>{
+    // filteredListNum => 0 - willNotDoList,1 - readyList ,2 - willDoList
+    const makeFilterdTodoDivList =(filteredListNum,__filteredList,__filterTodoCursorListCnt,__currentTodoSelector,__currentMemoSelector)=>{
         let tempArr =[]; let i=0;
-        let setClassName = (__i === 0) ? "willNotDo" : ((__i === 1) ? "ready" : "willDo");
+        let setClassName = (filteredListNum === 0) ? "willNotDo" : ((filteredListNum === 1) ? "ready" : "willDo");
 
-        while(i<__filteredList[__i].length){
+        while(i<__filteredList[filteredListNum].length){
             
             tempArr.push(
-                <div className={(__i === __filterTodoCursorListCnt && i === __currentTodoSelector) ? setClassName + "-now" : setClassName} key={__filteredList[__i][i].todolist}>
-                    {__filteredList[__i][i].todolist}
-                    {makeMemoDivList(__filteredList[__i][i].memolist,__currentMemoSelector)}
+                <div className={(filteredListNum === __filterTodoCursorListCnt && i === __currentTodoSelector) ? setClassName + "-now" : setClassName} key={__filteredList[filteredListNum][i].todolist}>
+                    {__filteredList[filteredListNum][i].todolist}
+                    {makeMemoDivList(__filteredList[filteredListNum][i].memolist,__currentMemoSelector)}
                 </div>
             )
             i = i+1;
@@ -48,7 +49,7 @@ function RenderTodoMemoDiveFilter({_mode,_currentTodoSelector,_currentMemoSelect
             <div className="willNotDoListDiv">
                 {filteredList[0]}
             </div>
-            <div className="readyDiv">
+            <div className="readyListDiv">
                 {filteredList[1]}
             </div>
             <div className="willDoListDiv">

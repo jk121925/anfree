@@ -38,7 +38,7 @@ class AppTodolist extends Component{
             stage : this.state.stage+1,
             modalState : !this.state.modalState,
             NextPrev : 'Next',
-            defaultActionState : (this.state.stage!==0) ?  "selectorMode" :"writeMode"
+            defaultActionState : (this.state.stage!==0) ?  "selectorMode" :"writeMode",
           })
         }
         else if(e.shiftKey && e.key === 'Backspace' && this.state.stage!==0){
@@ -58,6 +58,8 @@ class AppTodolist extends Component{
 
 
     render(){
+      // console.log(this.state);
+      console.log("apptodoList stage : ",this.state.stage);
       return(
         <div>
           
@@ -87,10 +89,11 @@ class AppTodolist extends Component{
             }.bind(this)}></ControllerTodoInput>
           ):null}
           {
-            this.state.stage === 0 ? (
+            (this.state.stage === 0) ? (
               <ControllerReadyTodoList 
                 _contents={this.state.contents}
-                _stage = {this.props._stageState[this.state.stage]}
+                // _stage = {this.props._stageState[this.state.stage]}
+                _stage = {this.state.stage}
                 updateContentsTodoList={function(updatelist){
                   this.setState({
                     contents : updatelist
@@ -101,7 +104,8 @@ class AppTodolist extends Component{
               (this.state.stage === 1) ? (
                 <ControllerFilterTodoList 
                   _contents={this.state.contents}
-                  _stage = {this.props._stageState[this.state.stage]}
+                  // _stage = {this.props._stageState[this.state.stage]}
+                  _stage = {this.state.stage}
                   updateContentsTodoList={function(updatelist){
                     this.setState({
                       contents : updatelist
@@ -115,16 +119,6 @@ class AppTodolist extends Component{
 
 
           }
-          {/* <ControllerReadyTodoList 
-            _contents={this.state.contents}
-            _stage = {this.props._stageState[this.state.stage]}
-            _stageDefaultActionMode = {this.state.defaultActionState}
-            updateContentsTodoList={function(updatelist){
-              this.setState({
-                contents : updatelist
-              })
-            }.bind(this)}
-          ></ControllerReadyTodoList> */}
         </div>
         
       );

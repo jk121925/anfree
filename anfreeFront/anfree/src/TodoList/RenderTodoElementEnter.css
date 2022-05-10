@@ -10,8 +10,7 @@
 }
 
 .todoMainElement-now{
-    text-align: left;
-    text-indent: 10px;
+    text-align: center;
     
     margin: 5px 5px;
     padding: 5px 5px 10px 5px;
@@ -22,21 +21,22 @@
 }
 
 .memoInput{
+    align-items: center;
     font-size: large;
-    text-indent: 20px;
+    /* text-indent: 20px; */
     color :white;
     background-color: None;
 }
 
 .memoElement{
     font-size:  large;
-    text-indent: 30px;
+    text-indent: 0px;
     color :white;
     background-color: None;
 }
 
 .memoElement-now{
-    text-indent: 30px;
+    text-indent: 0px;
     color :rgb(143, 166, 25);
     background-color: None;
 }

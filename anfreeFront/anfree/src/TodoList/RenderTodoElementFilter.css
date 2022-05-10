@@ -1,28 +1,31 @@
 
 
 .filterDiv{
-    width: 200;
-    margin: 5px, 5px;
-    border: 2px solid white;
     display: flex;
 }
 
-
-.ready{
-    width: 200px;
-    margin: 5px 5px;
-    color : rgb(255, 255, 255);
-
-    text-align: center;
-    text-indent: 10px;
-    
-    
+.readyListDiv, .willNotDoListDiv, .willDoListDiv{
+    min-width: 200px;
+    min-height: 200px;
+    margin: 10px;
+    padding : 10px;
+    border : 2px solid rgb(175, 101, 101);
+    border-radius: 40px;
 }
 
-.ready-now{
+
+
+
+.ready, .willNotDo, .willDo{
+    margin: 5px 5px;
+    padding: 5px 5px 10px 5px;
+    color : rgb(255, 255, 255);    
+}
+
+.ready-now, .willNotDo-now, .willDo-now{
     text-align: center;
-    text-indent: 10px;
-    width: 200px;
+    /* text-indent: 10px; */
+    /* width: 150px; */
     margin: 5px 5px;
     padding: 5px 5px 10px 5px;
     border-radius: 20px;
@@ -31,30 +34,8 @@
     background-color: transparent;
 }
 
-.willNotDoListDiv{
-    width: 200px;
-    margin: 5px 5px;
-    color : rgb(255, 255, 255);
 
-    text-align: center;
-    text-indent: 10px;
-}
 
-.willDoListDiv{
-    width: 200px;
-    margin: 5px 5px;
-    color : rgb(255, 255, 255);
-
-    text-align: center;
-    text-indent: 10px;
-}
-
-.memoInput{
-    font-size: large;
-    text-indent: 20px;
-    color :white;
-    background-color: None;
-}
 
 .memoElement{
     font-size:  large;
