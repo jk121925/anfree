@@ -54,6 +54,12 @@ class AppTodolist extends Component{
       })
     }
 
+    // componentDidUpdate(){
+    //   window.addEventListener('keydown',(e)=>{
+    //     console.log(e);
+    //   })
+    // }
+
     
 
 
