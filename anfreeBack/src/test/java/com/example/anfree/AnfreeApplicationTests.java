@@ -1,4 +1,4 @@
-package anfree.com.demo;
+package com.example.anfree;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
