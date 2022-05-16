@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
 import React, {Component, memo} from "react";
-import RenderTodoMemoDivEnter from "./RenderTodoMemoDivEnter";
-import RenderTodoMemoDiveFilter from "./RenderTodoMemoDiveFilter";
+import RenderTodoMemoDivReady from "./RenderTodoMemoDivReady";
+
 
 // mode, contents
 class RenderTodoList extends Component{
@@ -98,11 +98,6 @@ class RenderTodoList extends Component{
 
 
     componentDidMount() {
-        window.addEventListener('keydown',(e)=>{
-            if(e.shiftKey &&e.key === 'Enter'){
-                this.props._stage  = this.props._stage +1;
-            }
-        })
         window.addEventListener('keydown',(e)=>{
             // console.log("RenderTodoList action Mode " , this.actionMode , "writeContent Mode ", this.writeContentMode);
             /*
@@ -221,19 +216,24 @@ class RenderTodoList extends Component{
     }
 
 
+    // componentWillUnmount(){
+    //     console.log("ControllerReadyTodoList willUnmount");
+    //     window.removeEventListener("keydown");
+    //     console.log("remove Event Listener");
+    // }
 
 
     render(){
         console.log(this.props._stage);
         return(
             <div className='EnterTodo'>
-                <RenderTodoMemoDivEnter
+                <RenderTodoMemoDivReady
                 _contents={this.props._contents[1]}
                 _mode = {this.actionMode}
                 _currentTodoSelector = {this.currentTodoSelector}
                 _currentMemoSelector = {this.currentMemoSelector}
                 _writeContentMode = {this.writeContentMode}
-                ></RenderTodoMemoDivEnter>
+                ></RenderTodoMemoDivReady>
             </div>
         )
     }

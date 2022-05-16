@@ -19,7 +19,7 @@ class RenderTodoList extends Component{
     }
     /*
     TodoList 위아리 바꾸기
-    UpDonw : 위인지 아래인지
+    UpDown : 위인지 아래인지
     targetList : 지우고자 하는 list => 0,1,2
     currentTodoSelector : 현재 선택된 번호 => 몇번째가 선택 되었는지
     updateFunction : 함수에서 callback 하는 구조 => property에서 받아온 값
@@ -36,7 +36,7 @@ class RenderTodoList extends Component{
 
     /*
     Memo 위아래 바꾸기
-    UpDonw : 위인지 아래인지
+    UpDown : 위인지 아래인지
     targetList : 지우고자 하는 list => 0,1,2
     currentTodoSelector : 현재 선택된 번호 => 몇번째가 선택 되었는지
     currentMemoSelector : 현재 선택된 메모 번호
@@ -237,6 +237,9 @@ class RenderTodoList extends Component{
     }
 
 
+    componentWillUnmount(){
+        console.log("ControllerFiterTodoList willUnmount");
+    }
 
     render(){
         // console.log("render time " ,this.props._contents);

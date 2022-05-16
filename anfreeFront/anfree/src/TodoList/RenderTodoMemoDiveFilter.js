@@ -1,15 +1,8 @@
 import React ,{useState}from "react";
-import RenderMemoInput from "./RenderMemoInput";
 import "./RenderTodoElementFilter.css"
 
 function RenderTodoMemoDiveFilter({_currentTodoSelector,_currentMemoSelector,_filterTodoCursorListCnt,_filterTodoCursorList}){
-    console.log("rednerTodoMemoDivFilter : render");
-    // const [preContents, AfterContents] = useState(_contents);
     let filteredList =[];
-    // console.log(_filterTodoCursorList);
-    // const setAfterContents =(update)=>{
-    //     AfterContents(update);
-    // }
 
     // make memo <div> list
     // 메모 리스트를 만드는 component
