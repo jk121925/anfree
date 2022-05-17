@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.transaction.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 class MemberServiceTest {
@@ -24,5 +23,18 @@ class MemberServiceTest {
         String savedEmail = memberService.joinMember(member);
         Member findMember = memberService.findMember(savedEmail).get();
         assertThat(member.getEmail()).isEqualTo(findMember.getEmail());
+    }
+
+    @Test
+    void 가입확인(){
+        Member member  = new Member().setEmail("bell1902@naver.com").setName("jk").setPassword("1111").setSex("M");
+
+        String savedEmail = memberService.joinMember(member);
+        Member findMember = memberService.findMember(savedEmail).get();
+
+        assertThat(member.getEmail()).isEqualTo(findMember.getEmail());
+        assertThat(member.getName()).isEqualTo(findMember.getName());
+
+
     }
 }
