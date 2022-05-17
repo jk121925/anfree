@@ -237,9 +237,6 @@ class RenderTodoList extends Component{
     }
 
 
-    componentWillUnmount(){
-        console.log("ControllerFiterTodoList willUnmount");
-    }
 
     render(){
         // console.log("render time " ,this.props._contents);

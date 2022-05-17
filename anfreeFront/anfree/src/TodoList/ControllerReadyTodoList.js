@@ -104,8 +104,8 @@ class RenderTodoList extends Component{
                 위아래로 swap하는 기능 구현
             */
             
-            console.log("controllerReadyTodoList : componentDidMount start------------------------")
-            console.log(this.props._stage);
+            // console.log("controllerReadyTodoList : componentDidMount start------------------------")
+            // console.log(this.props._stage);
             if(e.shiftKey && 37<=e.keyCode && e.keyCode<=40 && this.actionMode === 'selectorMode'){
                 var _pressArrowDirection = e.key;
 
@@ -224,7 +224,7 @@ class RenderTodoList extends Component{
 
 
     render(){
-        console.log(this.props._stage);
+        // console.log(this.props._stage);
         return(
             <div className='EnterTodo'>
                 <RenderTodoMemoDivReady

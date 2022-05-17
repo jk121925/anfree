@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import './App.css';
 import AppClockCheckNow from './TodoList/AppClockCheckNow.js';
 import AppTodolist from './TodoList/AppTodolist.js'
@@ -17,19 +17,24 @@ class History_nav extends Component{
   }
 }
 
-
-
-
-
-
-
-
 function App() {
   const stageState = ["EnterTodo","FilterTodo","EraseTodo"];
   const [prevStage,nextStage] = useState(0);
-  const stageChange =(stageNum)=>{
-    nextStage(stageNum);
+
+  const calStage = (event, prevStage) =>{
+    
+    if(event.shiftKey && event.key == 'Enter' && prevStage !=2){
+      console.log("next stage console : ", event, prevStage);
+      return nextStage(prevStage+1);
+    }
+    else if(event.shiftKey && event.key == 'Backspace' && prevStage !=0){
+      console.log("prev stage console : ",event, prevStage);
+      return nextStage(prevStage-1);
+    }
+    return;
   }
+
+
 
   const setStageAppClassName = (prevStage)=>{
     let nowStageClassName;
@@ -44,20 +49,26 @@ function App() {
   }
 
 
+  useEffect(()=>{
+      window.addEventListener("keydown", (e) =>calStage(e,prevStage));
+      return () =>{
+        window.removeEventListener("keydown",(e)=>calStage(e,prevStage));
+        console.log("return")
+      }
+  }, [prevStage] )
+  
 
-  // console.log(prevStage);
-  console.log("app js", stageState[prevStage]);
   return (
     
     <div className='App'>
       <header className={setStageAppClassName(prevStage)}>
-        <History_nav></History_nav>
-        <AppWelcome ></AppWelcome>
-        <AppClockCheckNow></AppClockCheckNow>
+        <History_nav/>
+        <AppWelcome/>
+        <AppClockCheckNow/>
         <AppTodolist
-          _stageState = {stageState}
-          stageChange = {stageChange}
-        ></AppTodolist>
+          stageState = {stageState}
+          nowStage = {prevStage}
+        />
       </header>
     </div>
   );

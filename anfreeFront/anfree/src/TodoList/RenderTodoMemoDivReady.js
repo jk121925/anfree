@@ -4,7 +4,7 @@ import "./RenderTodoElementEnter.css"
 
 function TodoMemoDivReady({_contents,_mode,_currentTodoSelector,_writeContentMode,_currentMemoSelector}){
     // console.log("TodoMemoDiv and _currentMemoSelector" ,_currentTodoSelector, _currentMemoSelector);
-    console.log("todoMemoDivEnter : render");
+    // console.log("todoMemoDivEnter : render");
     const [preContents, AfterContents] = useState(_contents);
     var returnList =[]
 

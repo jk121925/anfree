@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Modal.css"
 const Modal = (props) => {  
     const {_modalState,_header, closeModal} = props;
-    
+    console.log(props)
     
 
 
@@ -14,7 +14,7 @@ const Modal = (props) => {
           <section>
             <header>
               {_header}
-              <button onClick={closeModal} className="close">
+              <button onClick= {closeModal} className="close">
                 &times;
               </button>
             </header>
