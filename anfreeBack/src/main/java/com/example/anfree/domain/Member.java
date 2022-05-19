@@ -1,16 +1,21 @@
 package com.example.anfree.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Member {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "member_id")
+    private Long memberId;
     private String name;
     private String email;
     private String password;
     private String sex;
+//    @OneToMany(mappedBy = "member")
+//    private List<ReadyTodoElement> RTEList  = new ArrayList<ReadyTodoElement>();
 
     public Member(){}
     public Member( String name, String email, String password, String sex) {
@@ -20,12 +25,21 @@ public class Member {
         this.sex = sex;
     }
 
-    public Long getId() {
-        return id;
+//    public List<ReadyTodoElement> getRTEList() {
+//        return RTEList;
+//    }
+//
+//    public Member setRTEList(List<ReadyTodoElement> RTEList) {
+//        this.RTEList = RTEList;
+//        return this;
+//    }
+
+    public Long getMemberId() {
+        return memberId;
     }
 
-    public Member setId(Long id) {
-        this.id = id;
+    public Member setMemberId(Long memberId) {
+        this.memberId = memberId;
         return this;
     }
 

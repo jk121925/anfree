@@ -29,13 +29,10 @@ class ReadyTodoElementServiceTest {
         String savedEmail = memberService.joinMember(member);
         Member findMember = memberService.findMember(savedEmail).get();
 
-
-        Date sqlDate = new Date(new java.util.Date().getTime());
-
         ReadyTodoElement rte = new ReadyTodoElement()
                 .setTodoElement("testDB")
                 .setEmail(findMember.getEmail())
-                .setUserId(findMember.getId());
+                .setMemberId(findMember.getMemberId());
 
         String savedTodoElement = RTES.insertReadyTodoElement(rte);
         ReadyTodoElement findRTE = RTES.findRTE("testDB", findMember.getEmail()).get();

@@ -1,12 +1,14 @@
 package com.example.anfree.service;
 
 import com.example.anfree.domain.Member;
+import com.example.anfree.domain.ReadyTodoElement;
 import com.example.anfree.repository.JpaMemberRepository;
 import com.example.anfree.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,4 +38,14 @@ public class MemberService {
     public Optional<Member> findMember(String email){
         return memberRepository.findByEmail(email);
     }
+
+//    public List<ReadyTodoElement> findAllRTE(String email){
+//        Member member = memberRepository.findByEmail(email).get();
+//        List<ReadyTodoElement> RTEList = member.getRTEList();
+//
+//        for( ReadyTodoElement RTEret : RTEList){
+//            System.out.println("member email : " + member.getEmail() + "'s todoList = " + RTEret.getTodoElement());
+//        }
+//        return RTEList;
+//    }
 }

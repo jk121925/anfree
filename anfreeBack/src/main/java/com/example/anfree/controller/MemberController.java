@@ -30,4 +30,5 @@ public class MemberController {
         return String.format(template,willJoinMember.getEmail(),willJoinMember.getName(),willJoinMember.getPassword(),willJoinMember.getSex());
     }
 
+
 }

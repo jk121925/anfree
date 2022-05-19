@@ -5,11 +5,11 @@ import com.example.anfree.domain.ReadyTodoElement;
 import com.example.anfree.service.MemberService;
 import com.example.anfree.service.ReadyTodoElementService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.Date;
+import java.util.List;
+
 
 @RestController
 public class ReadyTodoController {
@@ -33,10 +33,34 @@ public class ReadyTodoController {
         ReadyTodoElement insetRTE = new ReadyTodoElement()
                 .setTodoElement(todoElement)
                 .setEmail(email)
-                .setUserId(findMember.getId());
+                .setMemberId(findMember.getMemberId());
 
         return RETS.insertReadyTodoElement(insetRTE);
-
     }
 
+    @PostMapping("/insertJsonRTE")
+    public String insertJsonRTE(
+            @RequestBody List<ReadyTodoElement> data
+    ){
+        Date date = new Date();
+        for( ReadyTodoElement insertElement : data){
+            Member findMember = memberService.findMember(insertElement.getEmail()).get();
+            ReadyTodoElement insertRTE = new ReadyTodoElement()
+                    .setTodoElement(insertElement.getTodoElement())
+                    .setEmail(insertElement.getEmail())
+                    .setMemberId(findMember.getMemberId())
+                    .setDate(date);
+            RETS.insertReadyTodoElement(insertRTE);
+            System.out.println(insertRTE.toString());
+        }
+        return data.toString();
+    }
+
+//    @GetMapping("/findRTE")
+//    public String findAllRTE(
+//            @RequestParam(value = "email") String email
+//    ){
+//        List<ReadyTodoElement> retList =  memberService.findAllRTE(email);
+//        return retList.toString();
+//    }
 }
