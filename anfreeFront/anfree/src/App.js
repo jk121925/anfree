@@ -1,41 +1,26 @@
-import React, {Component, useEffect, useState} from 'react';
+import React, {useEffect, useState,useRef, useCallback} from 'react';
 import './App.css';
 import AppClockCheckNow from './TodoList/AppClockCheckNow.js';
 import AppTodolist from './TodoList/AppTodolist.js'
 import AppWelcome from './TodoList/AppWelcome.js'
+import Modal from "./Modal.js"
 
-class History_nav extends Component{
-  
-  render(){
-    return(
-      <nav>
+function History_nav(){
+  return(
+    <nav>
         <div>LOGIN</div>
         <div>CALENDER</div>
         <div>STATICS</div>
       </nav>
-    );
-  }
+  )
 }
+
 
 function App() {
   const stageState = ["EnterTodo","FilterTodo","EraseTodo"];
   const [prevStage,nextStage] = useState(0);
-
-  const calStage = (event, prevStage) =>{
-    
-    if(event.shiftKey && event.key == 'Enter' && prevStage !=2){
-      console.log("next stage console : ", event, prevStage);
-      return nextStage(prevStage+1);
-    }
-    else if(event.shiftKey && event.key == 'Backspace' && prevStage !=0){
-      console.log("prev stage console : ",event, prevStage);
-      return nextStage(prevStage-1);
-    }
-    return;
-  }
-
-
-
+  const [prevModalState, nextModalState] = useState(false);
+  
   const setStageAppClassName = (prevStage)=>{
     let nowStageClassName;
     if(prevStage === 0){
@@ -49,18 +34,68 @@ function App() {
   }
 
 
-  useEffect(()=>{
-      window.addEventListener("keydown", (e) =>calStage(e,prevStage));
-      return () =>{
-        window.removeEventListener("keydown",(e)=>calStage(e,prevStage));
-        console.log("return")
-      }
-  }, [prevStage] )
   
+  /*
+  모달 로직 
+  모달을 통해서 confirm을 진행한다.
+  confirm됨과 동시에 이전단계로는 돌아 갈 수 없다.
+  FBI WARNING 띄워야찌~
+  */
+  const modalMessage = "다음 단계로 넘어가면 이전 단계로는 돌아 갈 수 없습니다!\n 정말로 넘아가시겠습니까?"
+  
+
+  //Modal logic
+  const isInitialMount = useRef(false);
+  useEffect(() => {
+    if (!isInitialMount.current) {
+      isInitialMount.current = true;
+    }else{
+      return;
+    }
+  },[prevModalState]);
+
+
+  const modelClose = () =>{
+    nextModalState(false)
+  }
+  const modelCloseAndGoNext = useCallback(() =>{
+    nextStage(prevStage+1);
+    nextModalState(false);
+  },[prevStage])
+  // const modelCloseAndGoNext2 = useCallback(() =>{
+  //   nextStage(2);
+  //   nextModalState(false);
+  // },[])
+
+  const modalOpen = ()=>{
+    nextModalState(true);
+  }
+  
+
+
+  useEffect(()=>{
+    window.addEventListener("keydown", (e) =>{
+      if(e.shiftKey && e.key=='Enter') {
+        modalOpen();
+      }
+    });
+  })
+
 
   return (
     
     <div className='App'>
+      <Modal
+      modalState={prevModalState}
+      header={stageState[prevStage]}
+      nowStage = {prevStage}
+      modelClose={modelClose}
+      modelCloseAndGoNext = {modelCloseAndGoNext}
+      // modelCloseAndGoNext2 = {modelCloseAndGoNext2}
+      >
+      {modalMessage}
+      </Modal>
+
       <header className={setStageAppClassName(prevStage)}>
         <History_nav/>
         <AppWelcome/>
