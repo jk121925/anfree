@@ -47,7 +47,7 @@ function App() {
   //Modal logic
   const isInitialMount = useRef(false);
   useEffect(() => {
-    if (!isInitialMount.current) {
+    if (!isInitialMount.current && prevStage !=2) {
       isInitialMount.current = true;
     }else{
       return;
@@ -55,6 +55,8 @@ function App() {
   },[prevModalState]);
 
 
+
+  //modal close logic
   const modelClose = () =>{
     nextModalState(false)
   }
@@ -62,15 +64,10 @@ function App() {
     nextStage(prevStage+1);
     nextModalState(false);
   },[prevStage])
-  // const modelCloseAndGoNext2 = useCallback(() =>{
-  //   nextStage(2);
-  //   nextModalState(false);
-  // },[])
 
   const modalOpen = ()=>{
     nextModalState(true);
   }
-  
 
 
   useEffect(()=>{
@@ -79,8 +76,7 @@ function App() {
         modalOpen();
       }
     });
-  })
-
+  },)
 
   return (
     
@@ -91,7 +87,6 @@ function App() {
       nowStage = {prevStage}
       modelClose={modelClose}
       modelCloseAndGoNext = {modelCloseAndGoNext}
-      // modelCloseAndGoNext2 = {modelCloseAndGoNext2}
       >
       {modalMessage}
       </Modal>

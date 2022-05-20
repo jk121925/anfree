@@ -1,4 +1,4 @@
-.todoMainElement{
+.READY{
     width: 300px;
     margin: 5px 5px;
     color : rgb(255, 255, 255);
@@ -9,7 +9,7 @@
     
 }
 
-.todoMainElement-now{
+.READY-now{
     text-align: center;
     
     margin: 5px 5px;

@@ -5,7 +5,7 @@ const Modal = (props) => {
     console.log(props)
     return (
       // 모달이 열릴때 openModal 클래스가 생성된다.
-      <div className={ modalState ? 'openModal modal' : 'modal'}>
+      <div className={ (modalState && nowStage!=2) ? 'openModal modal' : 'modal'}>
         {modalState ? (
           <section>
             <header>

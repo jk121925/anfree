@@ -1,6 +1,6 @@
 import React from "react";
 
-function RenderMemoInput({_memoContents,_memoIdx,_setterContents}){
+function RenderMemoInput({renderTodoList,listSelector,todoSelector,memoSelector,memoUpdate}){
     return(
         <input
         className="todoMemoInput-memo"
@@ -9,9 +9,9 @@ function RenderMemoInput({_memoContents,_memoIdx,_setterContents}){
             onKeyPress={function(e){
                 if(e.nativeEvent.key === 'Enter'){
                     e.preventDefault();
-                    var resetMemo = Array.from(_memoContents);
-                    resetMemo[_memoIdx].memolist.push(e.target.value);
-                    _setterContents(resetMemo);
+                    var resetMemo = Array.from(renderTodoList);
+                    resetMemo[listSelector][todoSelector].memolist.push(e.target.value);
+                    memoUpdate(resetMemo);
                     e.target.value=""
                 }
             }.bind(this)}

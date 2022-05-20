@@ -136,7 +136,6 @@ class RenderTodoList extends Component{
 
     render(){
         return(
-            
             <div className='EnterTodo'>
                 <RenderTodoMemoDivReady
                 _contents={this.props._contents[1]}

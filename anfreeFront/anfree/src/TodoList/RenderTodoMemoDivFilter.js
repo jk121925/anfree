@@ -1,7 +1,7 @@
 import React ,{useState}from "react";
 import "./RenderTodoElementFilter.css"
 
-function RenderTodoMemoDiveFilter({_currentTodoSelector,_currentMemoSelector,_filterTodoCursorListCnt,_filterTodoCursorList}){
+function RenderTodoMemoDivFilter({_currentTodoSelector,_currentMemoSelector,_filterTodoCursorListCnt,_filterTodoCursorList}){
     let filteredList =[];
 
     // make memo <div> list
@@ -52,4 +52,4 @@ function RenderTodoMemoDiveFilter({_currentTodoSelector,_currentMemoSelector,_fi
     );
 };
 
-export default RenderTodoMemoDiveFilter; 
+export default RenderTodoMemoDivFilter; 

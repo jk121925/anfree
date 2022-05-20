@@ -1,79 +1,109 @@
-import React ,{useState}from "react";
+import React ,{ memo, useState}from "react";
 import RenderMemoInput from "./RenderMemoInput";
 import "./RenderTodoElementEnter.css"
 
-function TodoMemoDivReady({_contents,_mode,_currentTodoSelector,_writeContentMode,_currentMemoSelector}){
-    // console.log("TodoMemoDiv and _currentMemoSelector" ,_currentTodoSelector, _currentMemoSelector);
-    // console.log("todoMemoDivEnter : render");
-    const [preContents, AfterContents] = useState(_contents);
-    var returnList =[]
-
-    const setAfterContents =(update)=>{
-        AfterContents(update);
-    }
-
-    const makeMemoDivList =(memoListByContent,__currentMemoSelector)=>{
+function TodoMemoDivReady(props){
+    const {listSelector,todoSelector,renderTodoList,memoSelector,todoMode,memoUpdate} = props;
+    console.log(props)
+    var returnRenderList =[]
+    const makeMemoDivList =(memoListByList,memoSelector)=>{
         return(
-            memoListByContent.map((memoElement,index)=>(
-                <div className={(__currentMemoSelector===index ) ? "memoElement-now":"memoElement"} key={i+memoElement}>{memoElement}</div>
+            memoListByList.map((memoElement,index)=>(
+                <div className={(memoSelector===index ) ? "memoElement-now":"memoElement"} key={index+ "_"+ memoElement}>{memoElement}</div>
             ))
         )
     }
-    
 
-
-    var renderContainer = Array.from(_contents);
-    var i=0;
-    
-    if(_mode === 'selectorMode'){
-        while(i<renderContainer.length){
-            if(_currentTodoSelector!==-1 && i===_currentTodoSelector){
-                if(_writeContentMode ==='memoList'){
-                    returnList.push(
-                        <div className="todoMainElement-now" key={renderContainer[i].todolist}>
-                            {renderContainer[i].todolist}
-                            <div className="MemoInput" key={renderContainer[i].todolist +"mempInputs"}>
-                                <RenderMemoInput
-                                    _memoContents = {renderContainer}
-                                    _memoIdx = {_currentTodoSelector}
-                                    _setterContents = {setAfterContents}
-                                ></RenderMemoInput> 
-                            </div>
-                            {makeMemoDivList(renderContainer[i].memolist,_currentMemoSelector)}
+    const makeReadyTodoDivList = (listSelector,todoSelector,renderTodoList,memoSelector) =>{
+        let tempArr = []; 
+        let i=0;
+        let setClassName = "READY";
+        while(i<renderTodoList[listSelector].length){            
+            if(!todoMode&& i === todoSelector){
+                tempArr.push(
+                    <div className={(todoSelector === i)? setClassName + "-now" : setClassName} key={renderTodoList[i] + "-" + i}>
+                        {renderTodoList[listSelector][i].todolist}
+                        <div className="MemoInput" key={renderTodoList[i].todolist +"mempInputs"}>
+                        <RenderMemoInput
+                            renderTodoList = {renderTodoList}
+                            memoSelector = {memoSelector}
+                            listSelector = {listSelector}
+                            todoSelector = {todoSelector}
+                            memoUpdate = {memoUpdate}
+                        />
                         </div>
-                    );
-                }else{
-                    returnList.push(
-                        <div className="todoMainElement-now" key={renderContainer[i].todolist}>
-                            {renderContainer[i].todolist}
-                            {makeMemoDivList(renderContainer[i].memolist,-1)}
-                        </div>
-                    );
-                }
-            }else{
-                returnList.push(
-                    <div className="todoMainElement" key={renderContainer[i].todolist}>
-                        {renderContainer[i].todolist}
-                        {makeMemoDivList(renderContainer[i].memolist,-1)}
+                        {(renderTodoList[listSelector][i].memolist.length !=0)? makeMemoDivList(renderTodoList[listSelector][i].memolist,memoSelector) : null}
                     </div>
-                );
+                )
             }
-            i=i+1;
-        }//end while
-    }else{
-        while(i<renderContainer.length){
-            returnList.push(
-            <div className="todoMainElement" key={renderContainer[i].todolist}>
-                {renderContainer[i].todolist}
-                {makeMemoDivList(renderContainer[i].memolist,-1)}
-            </div>
-            );
-            
-            i=i+1
+            else{
+                tempArr.push(
+                    <div className={(todoSelector === i)? setClassName + "-now" : setClassName} key={renderTodoList[i] + "-" + i}>
+                        {renderTodoList[listSelector][i].todolist}
+                        {(renderTodoList[listSelector][i].memolist.length !=0)? makeMemoDivList(renderTodoList[listSelector][i].memolist,memoSelector) : null}
+                    </div>
+                )
+            }
+            i = i+1;
         }
+        return tempArr;
     }
+    
+    returnRenderList.push(makeReadyTodoDivList(listSelector,todoSelector,renderTodoList,memoSelector));
+
+
+    // var renderContainer = Array.from(renderTodoList);
+    // var i=0;
+    
+    // if(ActionMode === 'selectorMode'){
+    //     while(i<renderContainer.length){
+    //         if(todoSelector!==-1 && i===todoSelector){
+    //             if(writeMode ==='memoList'){
+    //                 returnList.push(
+    //                     <div className="todoMainElement-now" key={renderContainer[i].todolist}>
+    //                         {renderContainer[i].todolist}
+    //                         <div className="MemoInput" key={renderContainer[i].todolist +"mempInputs"}>
+    //                             <RenderMemoInput
+    //                                 _memoContents = {renderContainer}
+    //                                 _memoIdx = {todoSelector}
+    //                                 _setterContents = {setAfterContents}
+    //                             ></RenderMemoInput> 
+    //                         </div>
+    //                         {makeMemoDivList(renderContainer[i].memolist,memoSelector)}
+    //                     </div>
+    //                 );
+    //             }else{
+    //                 returnList.push(
+    //                     <div className="todoMainElement-now" key={renderContainer[i].todolist}>
+    //                         {renderContainer[i].todolist}
+    //                         {makeMemoDivList(renderContainer[i].memolist,-1)}
+    //                     </div>
+    //                 );
+    //             }
+    //         }else{
+    //             returnList.push(
+    //                 <div className="todoMainElement" key={renderContainer[i].todolist}>
+    //                     {renderContainer[i].todolist}
+    //                     {makeMemoDivList(renderContainer[i].memolist,-1)}
+    //                 </div>
+    //             );
+    //         }
+    //         i=i+1;
+    //     }//end while
+    // }else{
+    //     while(i<renderContainer.length){
+    //         returnList.push(
+    //         <div className="todoMainElement" key={renderContainer[i].todolist}>
+    //             {renderContainer[i].todolist}
+    //             {makeMemoDivList(renderContainer[i].memolist,-1)}
+    //         </div>
+    //         );
+            
+    //         i=i+1
+    //     }
+    // }
     return(
-        returnList
+        returnRenderList
     );
 };
 
